@@ -149,4 +149,70 @@
             <span style="font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem; color: var(--primary);" id="server-ip">SirTros-city.aternos.me</span>
             <i class="far fa-copy" style="opacity: 0.3;"></i>
         </div>
-        <p style="margin-top:
+        <p style="margin-top: 15px; font-size: 0.8rem; color: #555; text-transform: uppercase;">Klikni pro kopii IP adresy</p>
+    </header>
+
+    <section id="info">
+        <h2>O projektu</h2>
+        <div class="info-grid">
+<div class="info-card"><i class="fas fa-paint-roller"></i><h4>Režim</h4><p>Creative</p></div>
+<div class="info-card"><i class="fas fa-layer-group"></i><h4>Typ světa</h4><p>Superflat</p></div>
+<div class="info-card"><i class="fas fa-code-branch"></i><h4>Verze</h4><p>Nejnovější</p></div>
+<div class="info-card"><i class="fas fa-user-check"></i><h4>Přístup</h4><p>Whitelist</p></div>
+<div class="info-card"><i class="fas fa-id-card"></i><h4>TabMenu</h4><p>Propracované</p></div>
+<div class="info-card"><i class="fas fa-server"></i><h4>Hosting</h4><p>Aternos.org</p></div>
+<div class="info-card"><i class="fas fa-tools"></i><h4>Pluginy</h4><p>Geyser, VoiceChat, WorldEdit...</p></div>
+<div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Správa</h4><p>Parcely a Cesty</p></div>
+
+        </div>
+    </section>
+
+    <section id="galerie">
+        <h2>Galerie města</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(0)"><img src="assets/images/gal1.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(1)"><img src="assets/images/gal2.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(2)"><img src="assets/images/gal3.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(3)"><img src="assets/images/gal4.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(4)"><img src="assets/images/gal5.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal6.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal7.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal8.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+        </div>
+    </section>
+
+    <section id="pravidla">
+        <h2>Stavební pravidla</h2>
+        <div class="rules-list">
+            <div class="rule-item"><div class="rule-num">01</div><div><strong>Žádné TNT</strong><p style="color: #888; font-size: 0.9rem;">Používání TNT k ničení je přísně zakázáno.</p></div></div>
+<div class="rule-item"><div class="rule-num">02</div><div><strong>Zákaz ničení cizích staveb</strong><p style="color: #888; font-size: 0.9rem;">Neničte stavby ostatních hráčů. Griefing se trestá banem.</p></div></div>
+<div class="rule-item"><div class="rule-num">03</div><div><strong>Estetika a kvalita</strong><p style="color: #888; font-size: 0.9rem;">Snažte se o propracované stavby. Jednoduché kostky nejsou povoleny.</p></div></div>
+<div class="rule-item"><div class="rule-num">04</div><div><strong>Respektování parcel</strong><p style="color: #888; font-size: 0.9rem;">Stavte pouze na svém území a nezasahujte do sousedních pozemků.</p></div></div>
+<div class="rule-item"><div class="rule-num">05</div><div><strong>Zákaz lag-strojů</strong><p style="color: #888; font-size: 0.9rem;">Nekonečné redstone obvody a stroje zpomalující server jsou zakázány.</p></div></div>
+<div class="rule-item"><div class="rule-num">06</div><div><strong>Označování staveb</strong><p style="color: #888; font-size: 0.9rem;">Každá stavba musí obsahovat viditelnou cedulku se jménem majitele.</p></div></div>
+<div class="rule-item"><div class="rule-num">07</div><div><strong>Architektonický soulad</strong><p style="color: #888; font-size: 0.9rem;">Dodržujte styl čtvrti. Nestavte mrakodrapy v historickém centru.</p></div></div>
+<div class="rule-item"><div class="rule-num">08</div><div><strong>Úprava terénu</strong><p style="color: #888; font-size: 0.9rem;">Nenechávejte v zemi díry. Všechny podzemní prostory musí být uzavřené.</p></div></div>
+<div class="rule-item"><div class="rule-num">09</div><div><strong>Slušné chování</strong><p style="color: #888; font-size: 0.9rem;">Respektujte ostatní stavitele a nespamujte chat zbytečnostmi.</p></div></div>
+<div class="rule-item"><div class="rule-num">10</div><div><strong>Schvalování projektů</strong><p style="color: #888; font-size: 0.9rem;">Obří projekty nebo zásahy do silnic nejdříve konzultujte s adminem.</p></div></div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p class="copyright">&copy; <span id="year"></span> SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.</p>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function copyIP() {
+            const ip = document.getElementById('server-ip').innerText;
+            const alertBox = document.getElementById('custom-alert');
+            navigator.clipboard.writeText(ip).then(() => {
+                alertBox.classList.add('show');
+                setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>
