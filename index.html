@@ -6,8 +6,7 @@
     <title>SirTros-city | Minecraft server</title>
     
     <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <!-- Font Awesome pro ikony -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com" rel="stylesheet">
     
     <style>
         :root {
@@ -26,9 +25,6 @@
             background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
             z-index: -1;
         }
-
-        /* OPRAVA ODROLOVÁNÍ - Posune cíl o výšku navigace */
-        header, section { scroll-margin-top: 100px; }
 
         /* Navigace */
         nav {
@@ -50,11 +46,11 @@
         nav ul li a { text-decoration: none; color: #aaa; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
         nav ul li a:hover { color: var(--primary); }
 
-        section { padding: 80px 10%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        section { padding: 100px 10%; border-bottom: 1px solid rgba(255,255,255,0.05); }
         h2 { font-size: 2.5rem; text-align: center; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); }
 
-        /* Hero / Domů */
-        header { height: calc(100vh - 100px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        /* Hero */
+        header { height: calc(100vh - 200px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .whitelist-status { background: rgba(0, 210, 255, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 6px 18px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; }
         .ip-box { background: rgba(255,255,255,0.05); padding: 18px 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
         .ip-box:hover { border-color: var(--primary); transform: scale(1.02); }
@@ -65,18 +61,40 @@
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
         .gallery-item:hover img { opacity: 1; transform: scale(1.05); }
 
+        /* Lightbox */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            display: none; justify-content: center; align-items: center;
+            z-index: 9999; backdrop-filter: blur(8px);
+            overflow: hidden;
+        }
+        #lightbox.active { display: flex; }
+        
+        #lightbox-img { 
+            max-width: 85%; max-height: 85%; border-radius: 10px; 
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); border: 2px solid rgba(255,255,255,0.1);
+            /* Plynulý přechod pro animaci */
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; 
+        }
+        
+        .close-btn { position: absolute; top: 30px; right: 40px; color: white; font-size: 50px; cursor: pointer; opacity: 0.6; transition: 0.3s; z-index: 10001; }
+        .close-btn:hover { opacity: 1; }
+
+        .arrow { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 60px; cursor: pointer; user-select: none; padding: 20px; transition: 0.3s; opacity: 0.4; z-index: 10001; }
+        .arrow:hover { opacity: 1; color: var(--primary); transform: translateY(-50%) scale(1.1); }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+
         /* Info Karty */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
-        .info-card { background: var(--card-bg); padding: 25px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 210, 255, 0.2); transition: 0.3s; }
-        .info-card:hover { border-color: var(--primary); background: rgba(0, 210, 255, 0.05); }
-        .info-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; display: block; }
-        .info-card h4 { margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem; color: #888; }
-        .info-card p { font-weight: bold; font-size: 1.1rem; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .info-card { background: var(--card-bg); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 210, 255, 0.2); }
+        .info-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
 
         /* Pravidla */
-        .rules-list { max-width: 900px; margin: 0 auto; }
-        .rule-item { background: var(--card-bg); padding: 18px 25px; border-radius: 12px; margin-bottom: 12px; display: flex; gap: 20px; align-items: center; border: 1px solid rgba(255,255,255,0.03); }
-        .rule-num { font-size: 1.4rem; font-weight: 900; color: var(--primary); min-width: 45px; font-family: 'Courier New', monospace; }
+        .rules-list { max-width: 800px; margin: 0 auto; }
+        .rule-item { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 20px; align-items: center; }
+        .rule-num { font-size: 1.5rem; font-weight: 900; color: var(--primary); min-width: 40px; }
 
         /* Toast Alert */
         #custom-alert { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: #000; padding: 12px 25px; border-radius: 8px; font-weight: bold; z-index: 2000; transition: 0.5s; opacity: 0; box-shadow: 0 5px 20px rgba(0,210,255,0.4); }
@@ -89,7 +107,7 @@
         @media (max-width: 768px) { 
             nav { height: auto; flex-direction: column; padding: 20px; gap: 15px; } 
             nav ul { gap: 15px; } .logo-text { font-size: 1.2rem; }
-            header, section { scroll-margin-top: 160px; }
+            .arrow { font-size: 40px; }
         }
     </style>
 </head>
@@ -112,9 +130,15 @@
 
     <div id="custom-alert">IP ADRESA ZKOPÍROVÁNA!</div>
 
-    <!-- SEKCE DOMŮ -->
+    <div id="lightbox">
+        <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <span class="arrow prev" onclick="changeImg(-1)">❮</span>
+        <img id="lightbox-img" src="" alt="Zvětšený náhled">
+        <span class="arrow next" onclick="changeImg(1)">❯</span>
+    </div>
+
     <header id="domu">
-        <div class="whitelist-status"><i class="fas fa-city"></i> SOUKROMÝ SERVER</div>
+        <div class="whitelist-status"><i class="fas fa-city"></i> Soukromý server</div>
         <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px;">SirTros-city</h1>
         <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">
             Privátní kreativní svět zaměřený na stavbu moderního města na plochém světě.
@@ -125,63 +149,4 @@
             <span style="font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem; color: var(--primary);" id="server-ip">SirTros-city.aternos.me</span>
             <i class="far fa-copy" style="opacity: 0.3;"></i>
         </div>
-    </header>
-
-    <!-- SEKCE INFO -->
-    <section id="info">
-        <h2>Informace o serveru</h2>
-        <div class="info-grid">
-            <div class="info-card"><i class="fas fa-paint-roller"></i><h4>Režim</h4><p>Creative</p></div>
-            <div class="info-card"><i class="fas fa-layer-group"></i><h4>Typ světa</h4><p>Superflat</p></div>
-            <div class="info-card"><i class="fas fa-code-branch"></i><h4>Verze</h4><p>Nejnovější</p></div>
-            <div class="info-card"><i class="fas fa-user-check"></i><h4>Přístup</h4><p>Whitelist</p></div>
-            <div class="info-card"><i class="fas fa-id-card"></i><h4>TabMenu</h4><p>Propracované</p></div>
-            <div class="info-card"><i class="fas fa-server"></i><h4>Hosting</h4><p>Aternos.org</p></div>
-            <div class="info-card"><i class="fas fa-tools"></i><h4>Nástroje</h4><p>WorldEdit</p></div>
-            <div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Správa</h4><p>Parcely a Cesty</p></div>
-        </div>
-    </section>
-
-    <!-- SEKCE GALERIE -->
-    <section id="galerie">
-        <h2>Galerie města</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="assets/images/build1.jpg" alt="Stavba 1"></div>
-            <div class="gallery-item"><img src="assets/images/build2.jpg" alt="Stavba 2"></div>
-            <div class="gallery-item"><img src="assets/images/build3.jpg" alt="Stavba 3"></div>
-        </div>
-    </section>
-
-    <!-- SEKCE PRAVIDLA -->
-    <section id="pravidla">
-        <h2>Pravidla serveru</h2>
-        <div class="rules-list">
-            <div class="rule-item"><div class="rule-num">01</div><div><strong>Žádné TNT</strong><p style="color: #888; font-size: 0.9rem;">Používání TNT k ničení je přísně zakázáno.</p></div></div>
-            <div class="rule-item"><div class="rule-num">02</div><div><strong>Zákaz ničení cizích staveb</strong><p style="color: #888; font-size: 0.9rem;">Neničte stavby ostatních hráčů. Griefing se trestá banem.</p></div></div>
-            <div class="rule-item"><div class="rule-num">03</div><div><strong>Estetika a kvalita</strong><p style="color: #888; font-size: 0.9rem;">Snažte se o propracované stavby. Jednoduché kostky nejsou povoleny.</p></div></div>
-            <div class="rule-item"><div class="rule-num">04</div><div><strong>Respektování parcel</strong><p style="color: #888; font-size: 0.9rem;">Stavte pouze na svém území a nezasahujte do sousedních pozemků.</p></div></div>
-            <div class="rule-item"><div class="rule-num">05</div><div><strong>Zákaz lag-strojů</strong><p style="color: #888; font-size: 0.9rem;">Nekonečné redstone obvody a stroje zpomalující server jsou zakázány.</p></div></div>
-            <div class="rule-item"><div class="rule-num">06</div><div><strong>Označování staveb</strong><p style="color: #888; font-size: 0.9rem;">Každá stavba musí obsahovat viditelnou cedulku se jménem majitele.</p></div></div>
-            <div class="rule-item"><div class="rule-num">07</div><div><strong>Architektonický soulad</strong><p style="color: #888; font-size: 0.9rem;">Dodržujte styl čtvrti. Nestavte mrakodrapy v historickém centru.</p></div></div>
-            <div class="rule-item"><div class="rule-num">08</div><div><strong>Úprava terénu</strong><p style="color: #888; font-size: 0.9rem;">Nenechávejte v zemi díry. Všechny podzemní prostory musí být uzavřené.</p></div></div>
-            <div class="rule-item"><div class="rule-num">09</div><div><strong>Slušné chování</strong><p style="color: #888; font-size: 0.9rem;">Respektujte ostatní stavitele a nespamujte chat zbytečnostmi.</p></div></div>
-            <div class="rule-item"><div class="rule-num">10</div><div><strong>Schvalování projektů</strong><p style="color: #888; font-size: 0.9rem;">Obří projekty nebo zásahy do silnic nejdříve konzultujte s adminem.</p></div></div>
-        </div>
-    </section>
-
-    <footer>
-        <p class="copyright">&copy; 2026 SirTros-city Minecraft Server</p>
-    </footer>
-
-    <script>
-        function copyIP() {
-            const ip = document.getElementById('server-ip').innerText;
-            navigator.clipboard.writeText(ip);
-            const alert = document.getElementById('custom-alert');
-            alert.classList.add('show');
-            setTimeout(() => alert.classList.remove('show'), 3000);
-        }
-    </script>
-
-</body>
-</html>
+        <p style="margin-top:
