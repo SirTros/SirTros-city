@@ -6,7 +6,7 @@
     <title>SirTros-city | Minecraft server</title>
     
     <link rel="icon" type="image/png" href="assets/images/logo.png">
-    <link href="https://cdnjs.cloudflare.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
     
     <style>
         :root {
@@ -25,6 +25,9 @@
             background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
             z-index: -1;
         }
+
+        /* OPRAVA ODROLOVÁNÍ */
+        header, section { scroll-margin-top: 100px; }
 
         /* Navigace */
         nav {
@@ -55,41 +58,23 @@
         .ip-box { background: rgba(255,255,255,0.05); padding: 18px 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
         .ip-box:hover { border-color: var(--primary); transform: scale(1.02); }
 
-        /* Galerie */
+        /* Info Karty */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .info-card { background: var(--card-bg); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 210, 255, 0.2); }
+        .info-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; display: block; }
+
+        /* Galerie s texty */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .gallery-item { height: 220px; background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; cursor: pointer; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
         .gallery-item:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* Lightbox */
-        #lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            display: none; justify-content: center; align-items: center;
-            z-index: 9999; backdrop-filter: blur(8px);
-            overflow: hidden;
+        .gallery-text {
+            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+            color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,1); width: 100%; text-align: center;
+            pointer-events: none; z-index: 10; font-size: 0.9rem;
         }
-        #lightbox.active { display: flex; }
-        
-        #lightbox-img { 
-            max-width: 85%; max-height: 85%; border-radius: 10px; 
-            box-shadow: 0 0 40px rgba(0,0,0,0.8); border: 2px solid rgba(255,255,255,0.1);
-            /* Plynulý přechod pro animaci */
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; 
-        }
-        
-        .close-btn { position: absolute; top: 30px; right: 40px; color: white; font-size: 50px; cursor: pointer; opacity: 0.6; transition: 0.3s; z-index: 10001; }
-        .close-btn:hover { opacity: 1; }
-
-        .arrow { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 60px; cursor: pointer; user-select: none; padding: 20px; transition: 0.3s; opacity: 0.4; z-index: 10001; }
-        .arrow:hover { opacity: 1; color: var(--primary); transform: translateY(-50%) scale(1.1); }
-        .prev { left: 20px; }
-        .next { right: 20px; }
-
-        /* Info Karty */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
-        .info-card { background: var(--card-bg); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 210, 255, 0.2); }
-        .info-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
 
         /* Pravidla */
         .rules-list { max-width: 800px; margin: 0 auto; }
@@ -107,7 +92,6 @@
         @media (max-width: 768px) { 
             nav { height: auto; flex-direction: column; padding: 20px; gap: 15px; } 
             nav ul { gap: 15px; } .logo-text { font-size: 1.2rem; }
-            .arrow { font-size: 40px; }
         }
     </style>
 </head>
@@ -130,13 +114,6 @@
 
     <div id="custom-alert">IP ADRESA ZKOPÍROVÁNA!</div>
 
-    <div id="lightbox">
-        <span class="close-btn" onclick="closeLightbox()">&times;</span>
-        <span class="arrow prev" onclick="changeImg(-1)">❮</span>
-        <img id="lightbox-img" src="" alt="Zvětšený náhled">
-        <span class="arrow next" onclick="changeImg(1)">❯</span>
-    </div>
-
     <header id="domu">
         <div class="whitelist-status"><i class="fas fa-city"></i> Soukromý server</div>
         <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px;">SirTros-city</h1>
@@ -155,30 +132,29 @@
     <section id="info">
         <h2>O projektu</h2>
         <div class="info-grid">
-<div class="info-card"><i class="fas fa-paint-roller"></i><h4>Režim</h4><p>Creative</p></div>
-<div class="info-card"><i class="fas fa-layer-group"></i><h4>Typ světa</h4><p>Superflat</p></div>
-<div class="info-card"><i class="fas fa-code-branch"></i><h4>Verze</h4><p>Nejnovější</p></div>
-<div class="info-card"><i class="fas fa-user-check"></i><h4>Přístup</h4><p>Whitelist</p></div>
-<div class="info-card"><i class="fas fa-id-card"></i><h4>TabMenu</h4><p>Propracované</p></div>
-<div class="info-card"><i class="fas fa-server"></i><h4>Hosting</h4><p>Aternos.org</p></div>
-<div class="info-card"><i class="fas fa-tools"></i><h4>Pluginy</h4><p>Geyser, VoiceChat, WorldEdit...</p></div>
-<div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Správa</h4><p>Parcely a Cesty</p></div>
-
+            <div class="info-card"><i class="fas fa-paint-roller"></i><h4>Režim</h4><p>Creative</p></div>
+            <div class="info-card"><i class="fas fa-layer-group"></i><h4>Typ světa</h4><p>Superflat</p></div>
+            <div class="info-card"><i class="fas fa-code-branch"></i><h4>Verze</h4><p>Nejnovější</p></div>
+            <div class="info-card"><i class="fas fa-user-check"></i><h4>Přístup</h4><p>Whitelist</p></div>
+            <div class="info-card"><i class="fas fa-id-card"></i><h4>TabMenu</h4><p>Propracované</p></div>
+            <div class="info-card"><i class="fas fa-server"></i><h4>Hosting</h4><p>Aternos.org</p></div>
+            <div class="info-card"><i class="fas fa-tools"></i><h4>Pluginy</h4><p>Geyser, VoiceChat, WorldEdit</p></div>
+            <div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Správa</h4><p>Parcely a Cesty</p></div>
         </div>
     </section>
 
     <section id="galerie">
         <h2>Galerie města</h2>
         <div class="gallery-grid">
-            <div class="gallery-item" onclick="openLightbox(0)"><img src="assets/images/gal1.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(1)"><img src="assets/images/gal2.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(2)"><img src="assets/images/gal3.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(3)"><img src="assets/images/gal4.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(4)"><img src="assets/images/gal5.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal6.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal7.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal8.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
-            <div class="gallery-item" onclick="openLightbox(5)"><img src="assets/images/gal9.jpg" alt="Obrázek zatím není vložen nebo není k dispozici."></div>
+            <div class="gallery-item"><div class="gallery-text">Text 1</div><img src="assets/images/gal1.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 2</div><img src="assets/images/gal2.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 3</div><img src="assets/images/gal3.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 4</div><img src="assets/images/gal4.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 5</div><img src="assets/images/gal5.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 6</div><img src="assets/images/gal6.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 7</div><img src="assets/images/gal7.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 8</div><img src="assets/images/gal8.jpg" alt="Náhled"></div>
+            <div class="gallery-item"><div class="gallery-text">Text 9</div><img src="assets/images/gal9.jpg" alt="Náhled"></div>
         </div>
     </section>
 
@@ -186,16 +162,15 @@
         <h2>Stavební pravidla</h2>
         <div class="rules-list">
             <div class="rule-item"><div class="rule-num">01</div><div><strong>Žádné TNT</strong><p style="color: #888; font-size: 0.9rem;">Používání TNT k ničení je přísně zakázáno.</p></div></div>
-<div class="rule-item"><div class="rule-num">02</div><div><strong>Zákaz ničení cizích staveb</strong><p style="color: #888; font-size: 0.9rem;">Neničte stavby ostatních hráčů. Griefing se trestá banem.</p></div></div>
-<div class="rule-item"><div class="rule-num">03</div><div><strong>Estetika a kvalita</strong><p style="color: #888; font-size: 0.9rem;">Snažte se o propracované stavby. Jednoduché kostky nejsou povoleny.</p></div></div>
-<div class="rule-item"><div class="rule-num">04</div><div><strong>Respektování parcel</strong><p style="color: #888; font-size: 0.9rem;">Stavte pouze na svém území a nezasahujte do sousedních pozemků.</p></div></div>
-<div class="rule-item"><div class="rule-num">05</div><div><strong>Zákaz lag-strojů</strong><p style="color: #888; font-size: 0.9rem;">Nekonečné redstone obvody a stroje zpomalující server jsou zakázány.</p></div></div>
-<div class="rule-item"><div class="rule-num">06</div><div><strong>Označování staveb</strong><p style="color: #888; font-size: 0.9rem;">Každá stavba musí obsahovat viditelnou cedulku se jménem majitele.</p></div></div>
-<div class="rule-item"><div class="rule-num">07</div><div><strong>Architektonický soulad</strong><p style="color: #888; font-size: 0.9rem;">Dodržujte styl čtvrti. Nestavte mrakodrapy v historickém centru.</p></div></div>
-<div class="rule-item"><div class="rule-num">08</div><div><strong>Úprava terénu</strong><p style="color: #888; font-size: 0.9rem;">Nenechávejte v zemi díry. Všechny podzemní prostory musí být uzavřené.</p></div></div>
-<div class="rule-item"><div class="rule-num">09</div><div><strong>Slušné chování</strong><p style="color: #888; font-size: 0.9rem;">Respektujte ostatní stavitele a nespamujte chat zbytečnostmi.</p></div></div>
-<div class="rule-item"><div class="rule-num">10</div><div><strong>Schvalování projektů</strong><p style="color: #888; font-size: 0.9rem;">Obří projekty nebo zásahy do silnic nejdříve konzultujte s adminem.</p></div></div>
-
+            <div class="rule-item"><div class="rule-num">02</div><div><strong>Zákaz ničení</strong><p style="color: #888; font-size: 0.9rem;">Neničte stavby ostatních hráčů. Griefing se trestá banem.</p></div></div>
+            <div class="rule-item"><div class="rule-num">03</div><div><strong>Estetika</strong><p style="color: #888; font-size: 0.9rem;">Snažte se o propracované stavby. Žádné kostky.</p></div></div>
+            <div class="rule-item"><div class="rule-num">04</div><div><strong>Respektování parcel</strong><p style="color: #888; font-size: 0.9rem;">Stavte pouze na svém území.</p></div></div>
+            <div class="rule-item"><div class="rule-num">05</div><div><strong>Zákaz lag-strojů</strong><p style="color: #888; font-size: 0.9rem;">Nekonečné redstone obvody jsou zakázány.</p></div></div>
+            <div class="rule-item"><div class="rule-num">06</div><div><strong>Označování staveb</strong><p style="color: #888; font-size: 0.9rem;">Každá stavba musí mít cedulku se jménem.</p></div></div>
+            <div class="rule-item"><div class="rule-num">07</div><div><strong>Architektonický soulad</strong><p style="color: #888; font-size: 0.9rem;">Dodržujte styl čtvrti.</p></div></div>
+            <div class="rule-item"><div class="rule-num">08</div><div><strong>Úprava terénu</strong><p style="color: #888; font-size: 0.9rem;">Nenechávejte v zemi díry.</p></div></div>
+            <div class="rule-item"><div class="rule-num">09</div><div><strong>Slušné chování</strong><p style="color: #888; font-size: 0.9rem;">Respektujte ostatní stavitele.</p></div></div>
+            <div class="rule-item"><div class="rule-num">10</div><div><strong>Schvalování projektů</strong><p style="color: #888; font-size: 0.9rem;">Obří plány konzultujte s adminem.</p></div></div>
         </div>
     </section>
 
@@ -217,4 +192,3 @@
     </script>
 </body>
 </html>
-
