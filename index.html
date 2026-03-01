@@ -1,4 +1,4 @@
-cely kod do: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
@@ -14,6 +14,33 @@ cely kod do: <!DOCTYPE html>
     --card-bg: rgba(255, 255, 255, 0.05);
     --text: #ffffff;
     --nav-bg: rgba(0, 0, 0, 0.95);
+}
+
+    /* Skrýt výchozí scroll bar pro všechny prohlížeče */
+body {
+    overflow-y: scroll; /* zachová scrollování, ale skryje standardní lištu */
+    scrollbar-width: thin; /* pro Firefox */
+    scrollbar-color: var(--primary) rgba(255,255,255,0.1); /* barva pro Firefox */
+}
+
+/* Chrome, Edge, Safari */
+body::-webkit-scrollbar {
+    width: 10px; /* tloušťka scroll baru */
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05); /* pozadí dráhy */
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--primary); /* posuvník */
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.05); /* okraj posuvníku */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #00f0ff; /* při hoveru */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
@@ -209,6 +236,7 @@ setInterval(loadServerStatus, 10000);
     
 </body>
 </html>
+
 
 
 
