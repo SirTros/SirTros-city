@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 
 <style>
+/* ...tvé původní CSS ... */
 :root {
     --primary: #00d2ff;
     --bg: #0f0f13;
@@ -19,55 +20,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
 body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
-.bg-glow {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
-    z-index: -1;
-}
-
-header, section { scroll-margin-top: 100px; }
-
-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 10%; background: var(--nav-bg);
-    backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    height: 100px;
-}
-
-.nav-brand { display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; }
-.logo-img { height: 70px; border-radius: 5px; }
-.logo-text { 
-    font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
-}
-
-nav ul { display: flex; list-style: none; gap: 30px; }
-nav ul li a { text-decoration: none; color: #aaa; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-nav ul li a:hover { color: var(--primary); }
-
-section { padding: 100px 10%; border-bottom: 1px solid rgba(255,255,255,0.05); }
-h2 { font-size: 2.5rem; text-align: center; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); }
-
-header { height: calc(100vh - 200px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-
-.ip-box {
-    background: rgba(255,255,255,0.05);
-    padding: 18px 35px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.ip-box:hover { border-color: var(--primary); transform: scale(1.02); }
-
-footer { text-align: center; padding: 60px 20px; background: #000; }
-
-@media (max-width: 768px) { 
-    nav { flex-direction: column; padding: 20px; gap: 15px; } 
-}
+/* ...tvůj zbytek CSS přesně tak jak ho máš ... */
 </style>
 </head>
 <body>
@@ -75,28 +28,70 @@ footer { text-align: center; padding: 60px 20px; background: #000; }
 <div class="bg-glow"></div>
 
 <nav>
-    <a href="#" class="nav-brand">
-        <img src="assets/images/logo.png" class="logo-img">
+    <a href="index.html" class="nav-brand">
+        <img src="assets/images/logo.png" alt="Logo" class="logo-img">
         <div class="logo-text">SirTros-city</div>
     </a>
+    <ul>
+        <li><a href="#domu">Domů</a></li>
+        <li><a href="#info">Info</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#pravidla">Pravidla</a></li>
+    </ul>
 </nav>
 
-<header>
-    <h1>SirTros-city</h1>
+<div id="custom-alert">IP ADRESA ZKOPÍROVÁNA!</div>
 
-    <div class="ip-box" style="margin-top:20px; justify-content: space-between; width:100%; max-width:800px;">
-        <span id="mc-status">🟡 Loading</span>
-        <span id="mc-players">0/20 hráčů</span>
+<header id="domu">
+    <div class="whitelist-status"><i class="fas fa-city"></i> Soukromý server</div>
+    <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px;">SirTros-city</h1>
+    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">
+        Privátní kreativní svět zaměřený na stavbu moderního města na plochém světě.
+    </p>
+    
+    <div class="ip-box" onclick="copyIP()">
+        <i class="fas fa-server"></i>
+        <span id="server-ip" style="font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem; color: var(--primary);">SirTros-city.aternos.me</span>
+        <i class="far fa-copy" style="opacity: 0.3;"></i>
+    </div>
+    <p style="margin-top: 15px; font-size: 0.8rem; color: #555; text-transform: uppercase;">Klikni pro kopii IP adresy</p>
+
+    <!-- Status box horizontálně -->
+    <div class="ip-box" style="margin-top:20px; display:flex; justify-content: space-around; align-items:center; width:100%; max-width:800px; padding:15px 25px; cursor: default;">
+        <span id="mc-status" style="font-size: 1.1rem; color: #fff;">🟡 Loading</span>
+        <span id="mc-players" style="font-size: 0.9rem; color: #aaa;">0/20 hráčů</span>
     </div>
 </header>
 
+<section id="info">
+<!-- ...zbytek tvého obsahu ... -->
+</section>
+
+<section id="galerie">
+<!-- ...zbytek tvého obsahu ... -->
+</section>
+
+<section id="pravidla">
+<!-- ...zbytek tvého obsahu ... -->
+</section>
+
 <footer>
-<p>&copy; <span id="year"></span> SIRTROS-CITY</p>
+<p style="text-align:center; font-size:1rem; color:#fff; font-weight:900;">&copy; <span id="year"></span> SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.</p>
 </footer>
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
+function copyIP() {
+    const ip = document.getElementById('server-ip').innerText;
+    const alertBox = document.getElementById('custom-alert');
+    navigator.clipboard.writeText(ip).then(() => {
+        alertBox.classList.add('show');
+        setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+    });
+}
+
+// --- NOVÝ JS PRO ONLINE/OFFLINE ---
 let interval = null;
 
 async function loadServerStatus() {
@@ -114,15 +109,15 @@ async function loadServerStatus() {
         if (reallyOnline) {
             const onlinePlayers = data.players?.online ?? 0;
             statusElement.textContent = "🟢 Online";
-            playersElement.textContent = onlinePlayers + "/20 hráčů";
+            playersElement.textContent = `👥 ${onlinePlayers}/20 hráčů`;
         } else {
             statusElement.textContent = "🔴 Offline";
-            playersElement.textContent = "0/20 hráčů";
+            playersElement.textContent = "👥 0/20 hráčů";
         }
 
     } catch (err) {
         document.getElementById("mc-status").textContent = "🔴 Offline";
-        document.getElementById("mc-players").textContent = "0/20 hráčů";
+        document.getElementById("mc-players").textContent = "👥 0/20 hráčů";
     }
 }
 
