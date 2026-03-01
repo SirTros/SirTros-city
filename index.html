@@ -208,7 +208,7 @@ async function loadServerStatus() {
         }
 
     } catch (error) {
-        statusElement.textContent = "🔴 Offline";
+        statusElement.textContent = "⚠️ Chyba";
         playersElement.textContent = "👥 0/20 hráčů";
     }
 }
@@ -222,6 +222,7 @@ setInterval(loadServerStatus, 10000);
     
 </body>
 </html>
+
 
 
 
