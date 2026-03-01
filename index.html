@@ -172,15 +172,15 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 document.getElementById('year').textContent = new Date().getFullYear();
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
-function copyIP() {
-    const ip = document.getElementById('server-ip').innerText;
-    const alertBox = document.getElementById('custom-alert');
-    navigator.clipboard.writeText(ip).then(() => {
-        alertBox.classList.add('show');
-        setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
-    });
+async function fetchWithTimeout(url, timeout = 5000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+        const response = await fetch(url, { signal: controller.signal });
+        return await response.json();
+    } finally {
+        clearTimeout(id);
+    }
 }
 
 async function loadServerStatus() {
@@ -188,10 +188,8 @@ async function loadServerStatus() {
     const playersElement = document.getElementById("mc-players");
 
     try {
-        const response = await fetch("https://api.mcstatus.io/v2/status/java/sirtros-city.aternos.me");
-        const data = await response.json();
+        const data = await fetchWithTimeout("https://api.mcstatus.io/v2/status/java/sirtros-city.aternos.me", 5000);
 
-        // kontrola verze (např 1.20 nebo 1.20.4)
         const versionPattern = /^\d+\.\d+(\.\d+)?$/;
         const versionName = data.version?.name || "";
         const validVersion = versionPattern.test(versionName);
@@ -206,22 +204,18 @@ async function loadServerStatus() {
             statusElement.textContent = "🔴 Offline";
             playersElement.textContent = "👥 0/20 hráčů";
         }
-
     } catch (error) {
-        statusElement.textContent = "⚠️ Chyba";
+        statusElement.textContent = "🔴 Offline";
         playersElement.textContent = "👥 0/20 hráčů";
     }
 }
 
-// 🚀 důležité – spuštění při načtení
 loadServerStatus();
-
-// 🔁 automatická aktualizace každých 10 sekund
 setInterval(loadServerStatus, 10000);
-</script>
     
 </body>
 </html>
+
 
 
 
