@@ -200,49 +200,18 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-async function fetchWithTimeout(url, timeout = 5000) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    try {
-        const response = await fetch(url, { signal: controller.signal });
-        return await response.json();
-    } finally {
-        clearTimeout(id);
-    }
-}
-
-async function loadServerStatus() {
-    const statusElement = document.getElementById("mc-status");
-    const playersElement = document.getElementById("mc-players");
-
-    try {
-        const data = await fetchWithTimeout("https://api.mcstatus.io/v2/status/java/sirtros-city.aternos.me", 5000);
-
-        const versionPattern = /^\d+\.\d+(\.\d+)?$/;
-        const versionName = data.version?.name || "";
-        const validVersion = versionPattern.test(versionName);
-
-        const reallyOnline = data.online === true && validVersion;
-
-        if (reallyOnline) {
-            const onlinePlayers = data.players?.online ?? 0;
-            statusElement.textContent = "🟢 Online";
-            playersElement.textContent = `👥 ${onlinePlayers}/20 hráčů`;
-        } else {
-            statusElement.textContent = "🔴 Offline";
-            playersElement.textContent = "👥 0/20 hráčů";
+     function copyIP() {
+            const ip = document.getElementById('server-ip').innerText;
+            const alertBox = document.getElementById('custom-alert');
+            navigator.clipboard.writeText(ip).then(() => {
+                alertBox.classList.add('show');
+                setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+            });
         }
-    } catch (error) {
-        statusElement.textContent = "🔴 Offline";
-        playersElement.textContent = "👥 0/20 hráčů";
-    }
-}
-
-loadServerStatus();
-setInterval(loadServerStatus, 10000);
-    
+</script>
 </body>
 </html>
+
 
 
 
