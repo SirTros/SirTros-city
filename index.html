@@ -16,31 +16,29 @@
     --nav-bg: rgba(0, 0, 0, 0.95);
 }
 
-    /* Skrýt výchozí scroll bar pro všechny prohlížeče */
 body {
-    overflow-y: scroll; /* zachová scrollování, ale skryje standardní lištu */
-    scrollbar-width: thin; /* pro Firefox */
-    scrollbar-color: var(--primary) rgba(255,255,255,0.1); /* barva pro Firefox */
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(255,255,255,0.1);
 }
 
-/* Chrome, Edge, Safari */
 body::-webkit-scrollbar {
-    width: 10px; /* tloušťka scroll baru */
+    width: 10px;
 }
 
 body::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05); /* pozadí dráhy */
+    background: rgba(255,255,255,0.05);
     border-radius: 10px;
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: var(--primary); /* posuvník */
+    background-color: var(--primary);
     border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.05); /* okraj posuvníku */
+    border: 2px solid rgba(255,255,255,0.05);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background-color: #00f0ff; /* při hoveru */
+    background-color: #00f0ff;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
@@ -91,17 +89,40 @@ header { height: calc(100vh - 200px); display: flex; flex-direction: column; jus
 .gallery-item:hover img { opacity: 1; transform: scale(1.05); }
 .gallery-text { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,1); width: 100%; text-align: center; pointer-events: none; z-index: 10; font-size: 0.9rem; }
 
+.social-section {
+    text-align: center;
+    margin: 50px 0;
+}
+.whatsapp-btn {
+    display: inline-block;
+    padding: 14px 30px;
+    background-color: #25D366;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+.whatsapp-btn:hover {
+    background-color: #1ebe57;
+    transform: scale(1.05);
+}
+
 .rules-list { max-width: 800px; margin: 0 auto; }
 .rule-item { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 20px; align-items: center; }
 .rule-num { font-size: 1.5rem; font-weight: 900; color: var(--primary); min-width: 40px; }
 
 #custom-alert { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: #000; padding: 12px 25px; border-radius: 8px; font-weight: bold; z-index: 2000; transition: 0.5s; opacity: 0; box-shadow: 0 5px 20px rgba(0,210,255,0.4); }
 #custom-alert.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-8
+
 footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2px solid rgba(255, 255, 255, 0.1); }
+
 @media (max-width: 768px) { 
     nav { height: auto; flex-direction: column; padding: 20px; gap: 15px; } 
-    nav ul { gap: 15px; } .logo-text { font-size: 1.2rem; }
+    nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
+    .logo-text { font-size: 1.2rem; }
+    .whatsapp-btn { width: 90%; text-align: center; padding: 16px 0; font-size: 1.2rem; }
 }
 </style>
 </head>
@@ -118,6 +139,7 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
         <li><a href="#domu">Domů</a></li>
         <li><a href="#info">Info</a></li>
         <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#socialni site">Sociální sítě</a></li>
         <li><a href="#pravidla">Pravidla</a></li>
     </ul>
 </nav>
@@ -177,6 +199,13 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 </div>
 </section>
 
+<section id="socialni site" class="social-section">
+<h2>Sociální sítě</h2>
+<a href="https://whatsapp.com/channel/0029Vb7WQ18KGGGKivLYC510" target="_blank" class="whatsapp-btn">
+    📱 Sleduj náš WhatsApp kanál
+</a>
+</section>
+
 <section id="pravidla">
 <h2>Pravidla serveru</h2>
 <div class="rules-list">
@@ -198,37 +227,14 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 </footer>
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
-     function copyIP() {
-            const ip = document.getElementById('server-ip').innerText;
-            const alertBox = document.getElementById('custom-alert');
-            navigator.clipboard.writeText(ip).then(() => {
-                alertBox.classList.add('show');
-                setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
-            });
-        }
+function copyIP() {
+    const ip = document.getElementById('server-ip').innerText;
+    const alertBox = document.getElementById('custom-alert');
+    navigator.clipboard.writeText(ip).then(() => {
+        alertBox.classList.add('show');
+        setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
+    });
+}
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
