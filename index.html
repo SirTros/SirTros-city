@@ -91,23 +91,29 @@ header { height: calc(100vh - 200px); display: flex; flex-direction: column; jus
 
 .social-section {
     text-align: center;
-    margin: 50px 0;
+    padding: 50px 20px;
 }
-.whatsapp-btn {
-    display: inline-block;
-    padding: 14px 30px;
-    background-color: #25D366;
-    color: #fff;
+
+.whatsapp-btn, .mclist-btn {
+    display: inline-block; /* Drží tlačítka vedle sebe */
+    padding: 14px 30px;    /* Původní výška/šířka */
+    margin: 10px 15px;     /* MEZERA: 10px nahoru/dolů, 15px do stran */
+    border-radius: 12px;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 12px;
     font-size: 1.1rem;
     transition: 0.3s;
+    color: #fff;
 }
-.whatsapp-btn:hover {
-    background-color: #1ebe57;
+
+.whatsapp-btn { background-color: #25D366; }
+.mclist-btn { background-color: #ff8018; }
+
+.whatsapp-btn:hover, .mclist-btn:hover {
     transform: scale(1.05);
+    filter: brightness(1.1);
 }
+
 
 .rules-list { max-width: 800px; margin: 0 auto; }
 .rule-item { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 20px; align-items: center; }
@@ -199,12 +205,14 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 </div>
 </section>
 
-<section id="socialni site" class="social-section">
-<h2>Sociální sítě</h2>
-<a href="https://whatsapp.com/channel/0029Vb7WQ18KGGGKivLYC510" target="_blank" class="whatsapp-btn">
-    📱 Sleduj náš WhatsApp kanál
-</a>
+<section id="socialni site" class="social-section" style="text-align: center;">
+    <h2>Sociální sítě</h2>
+    <!-- target="_blank" otevře odkaz v novém okně -->
+    <a href="https://www.whatsapp.com/channel/0029Vb7WQ18KGGGKivLYC510" class="whatsapp-btn" target="_blank">📱 WhatsApp kanál</a>
+    <a href="https://www.minecraft-list.cz/server/sirtros-city" class="mclist-btn" target="_blank">💻 Minecraft server list</a>
 </section>
+
+
 
 <section id="pravidla">
 <h2>Pravidla serveru</h2>
