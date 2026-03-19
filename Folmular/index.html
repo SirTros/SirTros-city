@@ -1,4 +1,4 @@
-<!DOCTYPE<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
@@ -48,6 +48,18 @@ input::placeholder, textarea::placeholder {
     color: #aaa;
 }
 
+label {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
 button {
     width: 100%;
     margin-top: 15px;
@@ -90,6 +102,11 @@ button:hover {
         <input type="text" name="nick" placeholder="Minecraft nick" required>
         <input type="number" name="vek" placeholder="Věk" required>
         <textarea name="proc" placeholder="Proč chceš hrát?" required></textarea>
+        <input type="email" name="email" placeholder="Tvůj email pro potvrzení" required>
+        <label>
+            <input type="checkbox" name="slib" required>
+            Slibuji, že nebudu ničit server ani ostatní hráče
+        </label>
         <button type="submit">Odeslat žádost</button>
     </form>
 
@@ -106,26 +123,34 @@ const thanks = document.getElementById("thanksMessage");
 const errorMsg = document.getElementById("errorMessage");
 
 form.addEventListener("submit", function(e){
-    e.preventDefault(); // zastaví klasické odeslání
+    e.preventDefault();
     errorMsg.textContent = "";
 
     const nick = form.nick.value.trim();
     const vek = parseInt(form.vek.value);
     const proc = form.proc.value.trim();
+    const email = form.email.value.trim();
+    const slib = form.slib.checked;
 
-    // jednoduchá validace
+    // validace
     if(nick.length < 3){
         errorMsg.textContent = "Nick musí mít alespoň 3 znaky!";
         return;
     }
-
     if(isNaN(vek) || vek < 7 || vek > 99){
         errorMsg.textContent = "Věk musí být číslo mezi 7 a 99!";
         return;
     }
-
     if(proc.length < 10){
         errorMsg.textContent = "Prosím, napiš alespoň 10 znaků důvodu!";
+        return;
+    }
+    if(!email.includes("@")){
+        errorMsg.textContent = "Prosím, zadej platný email!";
+        return;
+    }
+    if(!slib){
+        errorMsg.textContent = "Musíš slíbit, že nebudeš ničít server ani ostatní hráče!";
         return;
     }
 
@@ -135,9 +160,7 @@ form.addEventListener("submit", function(e){
     fetch("https://formspree.io/f/mgondwdr", {
         method: "POST",
         body: data,
-        headers: {
-            'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
     })
     .then(response => {
         if(response.ok){
