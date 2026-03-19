@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whitelist SirTros City</title>
+
+<style>
+body {
+    background: #111; /* tmavé pozadí */
+    font-family: "Arial", sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #1b1b1b;
+    padding: 30px;
+    border-radius: 12px;
+    width: 360px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    border: 3px solid #00d2ff; /* světle modrý Minecraft styl */
+}
+
+h1 {
+    text-align: center;
+    color: #00d2ff;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+input, textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #222;
+    color: #fff;
+    font-size: 14px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #aaa;
+}
+
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #00d2ff;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00aacc;
+}
+
+/* potvrzovací text */
+.thanks {
+    text-align: center;
+    font-size: 18px;
+    color: #00ff00;
+    margin-top: 15px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Whitelist SirTros City</h1>
+
+    <form id="whitelistForm" action="https://formspree.io/f/mgondwdr" method="POST" target="_blank">
+        <input type="text" name="nick" placeholder="Minecraft nick" required>
+        <input type="number" name="vek" placeholder="Věk" required>
+        <textarea name="proc" placeholder="Proč chceš hrát?" required></textarea>
+        <button type="submit">Odeslat žádost</button>
+    </form>
+
+    <div class="thanks" id="thanksMessage" style="display:none;">
+        ✅ Žádost byla odeslána! Děkujeme.
+    </div>
+</div>
+
+<script>
+// zobrazit potvrzení po odeslání
+const form = document.getElementById("whitelistForm");
+const thanks = document.getElementById("thanksMessage");
+
+form.addEventListener("submit", function(e){
+    setTimeout(function(){
+        form.style.display = "none";
+        thanks.style.display = "block";
+    }, 500);
+});
+</script>
+
+</body>
+</html>
