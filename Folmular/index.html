@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE<!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 <style>
 body {
-    background: #111; /* tmavé pozadí */
+    background: #111;
     font-family: "Arial", sans-serif;
     color: #fff;
     display: flex;
@@ -23,7 +23,7 @@ body {
     border-radius: 12px;
     width: 360px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    border: 3px solid #00d2ff; /* světle modrý Minecraft styl */
+    border: 3px solid #00d2ff;
 }
 
 h1 {
@@ -66,12 +66,18 @@ button:hover {
     background: #00aacc;
 }
 
-/* potvrzovací text */
 .thanks {
     text-align: center;
     font-size: 18px;
     color: #00ff00;
     margin-top: 15px;
+    display: none;
+}
+
+.error {
+    text-align: center;
+    color: #ff4444;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -80,28 +86,71 @@ button:hover {
 <div class="container">
     <h1>Whitelist SirTros City</h1>
 
-    <form id="whitelistForm" action="https://formspree.io/f/mgondwdr" method="POST" target="_blank">
+    <form id="whitelistForm">
         <input type="text" name="nick" placeholder="Minecraft nick" required>
         <input type="number" name="vek" placeholder="Věk" required>
         <textarea name="proc" placeholder="Proč chceš hrát?" required></textarea>
         <button type="submit">Odeslat žádost</button>
     </form>
 
-    <div class="thanks" id="thanksMessage" style="display:none;">
+    <div class="thanks" id="thanksMessage">
         ✅ Žádost byla odeslána! Děkujeme.
     </div>
+
+    <div class="error" id="errorMessage"></div>
 </div>
 
 <script>
-// zobrazit potvrzení po odeslání
 const form = document.getElementById("whitelistForm");
 const thanks = document.getElementById("thanksMessage");
+const errorMsg = document.getElementById("errorMessage");
 
 form.addEventListener("submit", function(e){
-    setTimeout(function(){
-        form.style.display = "none";
-        thanks.style.display = "block";
-    }, 500);
+    e.preventDefault(); // zastaví klasické odeslání
+    errorMsg.textContent = "";
+
+    const nick = form.nick.value.trim();
+    const vek = parseInt(form.vek.value);
+    const proc = form.proc.value.trim();
+
+    // jednoduchá validace
+    if(nick.length < 3){
+        errorMsg.textContent = "Nick musí mít alespoň 3 znaky!";
+        return;
+    }
+
+    if(isNaN(vek) || vek < 7 || vek > 99){
+        errorMsg.textContent = "Věk musí být číslo mezi 7 a 99!";
+        return;
+    }
+
+    if(proc.length < 10){
+        errorMsg.textContent = "Prosím, napiš alespoň 10 znaků důvodu!";
+        return;
+    }
+
+    // odeslání na Formspree
+    const data = new FormData(form);
+
+    fetch("https://formspree.io/f/mgondwdr", {
+        method: "POST",
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.ok){
+            form.style.display = "none";
+            thanks.style.display = "block";
+        } else {
+            errorMsg.textContent = "Chyba při odesílání, zkuste to znovu.";
+        }
+    })
+    .catch(error => {
+        errorMsg.textContent = "Chyba při odesílání, zkuste to znovu.";
+        console.error(error);
+    });
 });
 </script>
 
