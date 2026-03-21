@@ -14,7 +14,6 @@
             padding: 20px;
         }
 
-        /* PEVNÉ OKNO: nebude se hýbat ani roztahovat */
         textarea {
             resize: none !important;
             width: 100%;
@@ -28,7 +27,7 @@
             font-family: inherit;
         }
         
-        form {
+        form, #thank-you-message {
             max-width: 400px;
             margin: 40px auto;
             padding: 20px;
@@ -36,6 +35,11 @@
             border-radius: 10px;
             color: white;
             border: 1px solid #333;
+        }
+
+        #thank-you-message {
+            display: none; /* Skryté, dokud se neodešle formulář */
+            text-align: center;
         }
         
         input {
@@ -65,7 +69,11 @@
             background-color: #0056b3;
         }
 
-        /* STYL PRO MALÝ ŠEDÝ POPISEK */
+        button:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+        }
+
         .info-text {
             text-align: center;
             color: #888;
@@ -78,11 +86,9 @@
 <body>
 
     <div class="main-content">
-        <!-- OPRAVENÁ ADRESA (přidáno /f/mgondwdr) -->
-        <form action="https://formspree.io/mgondwdr" method="POST">
+        <!-- FORMULÁŘ S ID PRO JAVASCRIPT -->
+        <form id="my-form" action="https://formspree.io/mgondwdr" method="POST">
             <h2 style="text-align: center; margin-bottom: 10px;">Přihláška do SirTros-city</h2>
-            
-            <!-- NOVÝ POPISEK O 24H -->
             <p class="info-text">Vyřízení může trvat až 24h.</p>
 
             <label style="display: block; margin-bottom: 5px;">Nickname:</label>
@@ -92,16 +98,57 @@
             <input type="number" name="age" placeholder="Tvůj věk" required>
 
             <label style="display: block; margin-bottom: 5px;">Napiš, proč chceš hrát:</label>
-            <!-- PEVNÉ OKNO -->
             <textarea name="reason" placeholder="Tady napiš svůj důvod..." required></textarea>
 
-            <button type="submit" style="margin-top: 15px;">Odeslat přihlášku</button>
+            <button type="submit" id="submit-btn" style="margin-top: 15px;">Odeslat přihlášku</button>
         </form>
+
+        <!-- MOJE VLASTNÍ PODĚKOVÁNÍ -->
+        <div id="thank-you-message">
+            <h2 style="color: #28a745;">Děkujeme!</h2>
+            <p>Tvoje přihláška byla úspěšně odeslána. Vyčkej prosím na vyřízení.</p>
+        </div>
     </div>
 
     <div style="text-align: center; margin-top: 20px;">
         <a href="index.html" style="color: #007bff; text-decoration: none;">← Zpět na hlavní stránku</a>
     </div>
+
+    <script>
+        const form = document.getElementById("my-form");
+        const thankYouMessage = document.getElementById("thank-you-message");
+        const submitBtn = document.getElementById("submit-btn");
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault(); // Zabrání klasickému odeslání a přesměrování
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Odesílám...";
+
+            const data = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: "POST",
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    form.style.display = "none"; // Schová formulář
+                    thankYouMessage.style.display = "block"; // Ukáže poděkování
+                } else {
+                    alert("Chyba při odesílání. Zkus to prosím znovu.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Odeslat přihlášku";
+                }
+            } catch (error) {
+                alert("Nastal problém s připojením k serveru.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Odeslat přihlášku";
+            }
+        });
+    </script>
 
 </body>
 </html>
