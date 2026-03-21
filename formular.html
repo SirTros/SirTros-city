@@ -7,19 +7,46 @@
     <style>
         body { background-color: #121212; color: white; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
         textarea { resize: none !important; width: 100%; height: 120px; box-sizing: border-box; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #2a2a2a; color: white; font-family: inherit; }
-        form, #thank-you-box { max-width: 400px; margin: 40px auto; padding: 20px; background: #1e1e1e; border-radius: 10px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        form, #thank-you-box { 
+            max-width: 400px; 
+            margin: 40px auto; 
+            padding: 20px; 
+            background: #1e1e1e; 
+            border-radius: 10px; 
+            border: 1px solid #333; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+        }
+
         #thank-you-box { display: none; text-align: center; }
+        
         input { width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box; border-radius: 5px; border: 1px solid #444; background: #2a2a2a; color: white; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
-        button:hover { background-color: #0056b3; }
-        button:disabled { background-color: #444; cursor: not-allowed; }
+        
+        /* Styl pro modré tlačítko */
+        .btn { 
+            width: 100%; 
+            padding: 12px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        .btn:hover { background-color: #0056b3; }
+        .btn:disabled { background-color: #444; cursor: not-allowed; }
+
         .info-text { text-align: center; color: #888; font-size: 13px; margin-top: -10px; margin-bottom: 20px; }
-        .close-link { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; cursor: pointer; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="main-content">
+        <!-- FORMULÁŘ -->
         <form id="my-form" action="https://formspree.io/mgondwdr" method="POST">
             <h2 style="text-align: center; margin-bottom: 10px;">Přihláška do SirTros-city</h2>
             <p class="info-text">Vyřízení může trvat až 24h.</p>
@@ -33,34 +60,27 @@
             <label style="display: block; margin-bottom: 5px;">Proč chceš hrát:</label>
             <textarea name="reason" placeholder="Tady napiš svůj důvod..." required></textarea>
 
-            <button type="submit" id="my-form-button" style="margin-top: 15px;">Odeslat přihlášku</button>
+            <button type="submit" id="my-form-button" class="btn" style="margin-top: 15px;">Odeslat přihlášku</button>
+            
+            <!-- TLAČÍTKO PRO ZAVŘENÍ POD FORMULÁŘEM -->
+            <button type="button" onclick="window.close()" class="btn" style="margin-top: 10px; background-color: #444;">Zavřít okno</button>
+            
             <p id="my-form-status" style="text-align: center; margin-top: 10px; font-size: 13px; color: #ff4444;"></p>
         </form>
 
+        <!-- PODĚKOVÁNÍ -->
         <div id="thank-you-box">
             <h2 style="color: #28a745;">Děkujeme!</h2>
             <p>Tvoje přihláška byla úspěšně odeslána.</p>
-            <button onclick="closeWindow()" style="margin-top: 15px; background-color: #444;">Zavřít toto okno</button>
+            <button onclick="window.close()" class="btn" style="margin-top: 15px;">Zavřít okno</button>
         </div>
     </div>
-
-    <!-- Odkaz pod formulářem, který okno zavře -->
-    <a href="#" onclick="closeWindow(); return false;" class="close-link">← Zavřít a zpět</a>
 
     <script>
         var form = document.getElementById("my-form");
         var thankYouBox = document.getElementById("thank-you-box");
         var button = document.getElementById("my-form-button");
         var status = document.getElementById("my-form-status");
-
-        // Funkce pro zavření okna
-        function closeWindow() {
-            window.close();
-            // Pojistka: pokud prohlížeč zakáže window.close (stává se u přímého vstupu), pošle ho na index
-            setTimeout(function() {
-                window.location.href = "index.html";
-            }, 200);
-        }
 
         async function handleSubmit(event) {
             event.preventDefault();
@@ -78,7 +98,7 @@
                     form.style.display = "none";
                     thankYouBox.style.display = "block";
                 } else {
-                    status.innerHTML = "Chyba při odesílání. Zkus to znovu.";
+                    status.innerHTML = "Chyba při odesílání.";
                     button.disabled = false;
                     button.innerText = "Odeslat přihlášku";
                 }
@@ -93,4 +113,3 @@
     </script>
 </body>
 </html>
-.
