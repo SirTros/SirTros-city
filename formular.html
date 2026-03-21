@@ -14,13 +14,12 @@
         button:hover { background-color: #0056b3; }
         button:disabled { background-color: #444; cursor: not-allowed; }
         .info-text { text-align: center; color: #888; font-size: 13px; margin-top: -10px; margin-bottom: 20px; }
-        .close-link { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; cursor: pointer; }
+        .close-link { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; cursor: pointer; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="main-content">
-        <!-- FORMULÁŘ: Upraveno na správné ID a odesílání -->
         <form id="my-form" action="https://formspree.io/mgondwdr" method="POST">
             <h2 style="text-align: center; margin-bottom: 10px;">Přihláška do SirTros-city</h2>
             <p class="info-text">Vyřízení může trvat až 24h.</p>
@@ -31,22 +30,22 @@
             <label style="display: block; margin-bottom: 5px;">Věk:</label>
             <input type="number" name="age" placeholder="Tvůj věk" required>
 
-            <label style="display: block; margin-bottom: 5px;">Napiš, proč chceš hrát:</label>
+            <label style="display: block; margin-bottom: 5px;">Proč chceš hrát:</label>
             <textarea name="reason" placeholder="Tady napiš svůj důvod..." required></textarea>
 
             <button type="submit" id="my-form-button" style="margin-top: 15px;">Odeslat přihlášku</button>
-            <p id="my-form-status" style="text-align: center; margin-top: 10px; font-size: 14px;"></p>
+            <p id="my-form-status" style="text-align: center; margin-top: 10px; font-size: 13px; color: #ff4444;"></p>
         </form>
 
-        <!-- PODĚKOVÁNÍ -->
         <div id="thank-you-box">
             <h2 style="color: #28a745;">Děkujeme!</h2>
-            <p>Tvoje přihláška byla úspěšně odeslána.<br>Vyčkej prosím na vyřízení.</p>
-            <button onclick="closeWindow()" style="margin-top: 15px; background-color: #444;">Zavřít okno</button>
+            <p>Tvoje přihláška byla úspěšně odeslána.</p>
+            <button onclick="closeWindow()" style="margin-top: 15px; background-color: #444;">Zavřít toto okno</button>
         </div>
     </div>
 
-    <a href="index.html" onclick="closeWindow(); return false;" class="close-link">← Zpět na hlavní stránku</a>
+    <!-- Odkaz pod formulářem, který okno zavře -->
+    <a href="#" onclick="closeWindow(); return false;" class="close-link">← Zavřít a zpět</a>
 
     <script>
         var form = document.getElementById("my-form");
@@ -54,49 +53,44 @@
         var button = document.getElementById("my-form-button");
         var status = document.getElementById("my-form-status");
 
+        // Funkce pro zavření okna
         function closeWindow() {
-            if (!window.close()) {
+            window.close();
+            // Pojistka: pokud prohlížeč zakáže window.close (stává se u přímého vstupu), pošle ho na index
+            setTimeout(function() {
                 window.location.href = "index.html";
-            }
+            }, 200);
         }
 
         async function handleSubmit(event) {
-          event.preventDefault();
-          button.disabled = true;
-          button.innerText = "Odesílám...";
-          
-          var data = new FormData(event.target);
-          
-          fetch(event.target.action, {
-            method: form.method,
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-          }).then(response => {
-            if (response.ok) {
-              // ÚSPĚCH: Skryjeme formulář a ukážeme poděkování
-              form.style.display = "none";
-              thankYouBox.style.display = "block";
-            } else {
-              response.json().then(data => {
-                if (Object.hasOwn(data, 'errors')) {
-                  status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+            event.preventDefault();
+            button.disabled = true;
+            button.innerText = "Odesílám...";
+            
+            var data = new FormData(event.target);
+            
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    form.style.display = "none";
+                    thankYouBox.style.display = "block";
                 } else {
-                  status.innerHTML = "Jejda! Nastala chyba při odesílání.";
+                    status.innerHTML = "Chyba při odesílání. Zkus to znovu.";
+                    button.disabled = false;
+                    button.innerText = "Odeslat přihlášku";
                 }
+            }).catch(error => {
+                status.innerHTML = "Problém s připojením.";
                 button.disabled = false;
                 button.innerText = "Odeslat přihlášku";
-              })
-            }
-          }).catch(error => {
-            status.innerHTML = "Jejda! Nastala chyba při odesílání.";
-            button.disabled = false;
-            button.innerText = "Odeslat přihlášku";
-          });
+            });
         }
 
         form.addEventListener("submit", handleSubmit);
     </script>
 </body>
 </html>
+.
