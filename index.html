@@ -1,259 +1,122 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SirTros-city | Minecraft server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirTros-city | Přihláška</title>
+    <style>
+        body { 
+            background-color: #121212; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            /* Zákaz scrollování */
+            overflow: hidden; 
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        textarea { resize: none !important; width: 100%; height: 100px; box-sizing: border-box; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #2a2a2a; color: white; font-family: inherit; }
+        
+        form, #thank-you-box { 
+            max-width: 400px; 
+            width: 100%;
+            padding: 20px; 
+            background: #1e1e1e; 
+            border-radius: 10px; 
+            border: 1px solid #333; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+        }
 
-<link rel="icon" type="image/png" href="assets/images/logo.png">
+        #thank-you-box { display: none; text-align: center; }
+        
+        input { width: 100%; padding: 10px; margin-bottom: 12px; box-sizing: border-box; border-radius: 5px; border: 1px solid #444; background: #2a2a2a; color: white; }
+        
+        .btn { 
+            width: 100%; 
+            padding: 12px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        .btn:hover { background-color: #0056b3; }
+        .btn:disabled { background-color: #444; cursor: not-allowed; }
 
-<style>
-:root {
-    --primary: #00d2ff;
-    --bg: #0f0f13;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --text: #ffffff;
-    --nav-bg: rgba(0, 0, 0, 0.95);
-}
-
-body {
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) rgba(255,255,255,0.1);
-}
-
-body::-webkit-scrollbar {
-    width: 10px;
-}
-
-body::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb {
-    background-color: var(--primary);
-    border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.05);
-}
-
-body::-webkit-scrollbar-thumb:hover {
-    background-color: #00f0ff;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
-body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-
-.bg-glow {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
-    z-index: -1;
-}
-
-header, section { scroll-margin-top: 100px; }
-
-nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 10%; background: var(--nav-bg);
-    backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    height: 100px;
-}
-
-.nav-brand { display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; }
-.logo-img { height: 70px; border-radius: 5px; image-rendering: -webkit-optimize-contrast; }
-.logo-text { 
-    font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
-    -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(255,255,255,0));
-}
-
-nav ul { display: flex; list-style: none; gap: 30px; }
-nav ul li a { text-decoration: none; color: #aaa; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-nav ul li a:hover { color: var(--primary); }
-
-section { padding: 100px 10%; border-bottom: 1px solid rgba(255,255,255,0.05); }
-h2 { font-size: 2.5rem; text-align: center; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); }
-
-header { height: calc(100vh - 200px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-.whitelist-status { background: rgba(0, 210, 255, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 6px 18px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-bottom: 25px; }
-.ip-box { background: rgba(255,255,255,0.05); padding: 18px 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
-.ip-box:hover { border-color: var(--primary); transform: scale(1.02); }
-    
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
-.info-card { background: var(--card-bg); padding: 30px; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 210, 255, 0.2); }
-.info-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; display: block; }
-
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.gallery-item { height: 220px; background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); position: relative; cursor: pointer; }
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
-.gallery-item:hover img { opacity: 1; transform: scale(1.05); }
-.gallery-text { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,1); width: 100%; text-align: center; pointer-events: none; z-index: 10; font-size: 0.9rem; }
-
-.social-section {
-    text-align: center;
-    padding: 50px 20px;
-}
-
-.whatsapp-btn, .mclist-btn, .form-btn {
-    display: inline-block; /* Drží tlačítka vedle sebe */
-    padding: 14px 30px;    /* Původní výška/šířka */
-    margin: 10px 15px;     /* MEZERA: 10px nahoru/dolů, 15px do stran */
-    border-radius: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: 0.3s;
-    color: #fff;
-}
-
-.whatsapp-btn { background-color: #25D366; }
-.mclist-btn { background-color: #ff8018; }
-.form-btn { background-color: #3a17ff; }
-
-.whatsapp-btn:hover, .mclist-btn:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-
-.rules-list { max-width: 800px; margin: 0 auto; }
-.rule-item { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 20px; align-items: center; }
-.rule-num { font-size: 1.5rem; font-weight: 900; color: var(--primary); min-width: 40px; }
-
-#custom-alert { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: #000; padding: 12px 25px; border-radius: 8px; font-weight: bold; z-index: 2000; transition: 0.5s; opacity: 0; box-shadow: 0 5px 20px rgba(0,210,255,0.4); }
-#custom-alert.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2px solid rgba(255, 255, 255, 0.1); }
-
-@media (max-width: 768px) { 
-    nav { height: auto; flex-direction: column; padding: 20px; gap: 15px; } 
-    nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
-    .logo-text { font-size: 1.2rem; }
-    .whatsapp-btn { width: 90%; text-align: center; padding: 16px 0; font-size: 1.2rem; }
-}
-</style>
+        .info-text { text-align: center; color: #888; font-size: 13px; margin-top: -10px; margin-bottom: 15px; }
+    </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+    <div class="main-content">
+        <form id="my-form" action="https://formspree.io/mgondwdr" method="POST">
+            <h2 style="text-align: center; margin-bottom: 10px;">Přihláška do SirTros-city</h2>
+            <p class="info-text">Vyřízení může trvat až 24h.</p>
 
-<nav>
-    <a href="index.html" class="nav-brand">
-        <img src="assets/images/logo.png" alt="Logo" class="logo-img">
-        <div class="logo-text">SirTros-city</div>
-    </a>
-    <ul>
-        <li><a href="#domu">Domů</a></li>
-        <li><a href="#info">Info</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#odkazy">Odkazy</a></li>
-        <li><a href="#pravidla">Pravidla</a></li>
-    </ul>
-</nav>
+            <label style="display: block; margin-bottom: 5px;">Nickname:</label>
+            <input type="text" name="Jméno" placeholder="Tvé jméno ve hře" required>
 
-<div id="custom-alert">IP ADRESA ZKOPÍROVÁNA!</div>
+            <label style="display: block; margin-bottom: 5px;">Věk:</label>
+            <input type="number" name="Věk" placeholder="Tvůj věk" required>
 
-<header id="domu">
-    <div class="whitelist-status"><i class="fas fa-city"></i> Soukromý server</div>
-    <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px;">SirTros-city</h1>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">
-        Privátní kreativní svět zaměřený na stavbu moderního města na plochém světě.
-    </p>
-    
-    <div class="ip-box" onclick="copyIP()">
-        <i class="fas fa-server"></i>
-        <span id="server-ip" style="font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem; color: var(--primary);">SirTros-city.aternos.me</span>
-        <i class="far fa-copy" style="opacity: 0.3;"></i>
+            <label style="display: block; margin-bottom: 5px;">Proč chceš hrát:</label>
+            <textarea name="Důvod" placeholder="Tady napiš svůj důvod..." required></textarea>
+            
+            <label style="display: block; margin-bottom: 5px;">Kde jsi nás našel:</label>
+            <textarea name="Nalezení" placeholder="Tady napiš kde jsi nás našel..." required style="height: 60px;"></textarea>
+
+            <button type="submit" id="my-form-button" class="btn" style="margin-top: 15px;">Odeslat přihlášku</button>
+            <button type="button" onclick="window.close()" class="btn" style="margin-top: 10px; background-color: #444;">Zavřít okno</button>
+            <p id="my-form-status" style="text-align: center; margin-top: 10px; font-size: 13px; color: #ff4444;"></p>
+        </form>
+
+        <div id="thank-you-box">
+            <h2 style="color: #28a745;">Děkujeme!</h2>
+            <p>Tvoje přihláška byla úspěšně odeslána.</p>
+            <button onclick="window.close()" class="btn" style="margin-top: 15px;">Zavřít okno</button>
+        </div>
     </div>
-    <p style="margin-top: 15px; font-size: 0.8rem; color: #555; text-transform: uppercase;">Klikni pro kopii IP Adresy</p>
-</header>
 
-<section id="info">
-<h2>O projektu</h2>
-<div class="info-grid">
-    <div class="info-card"><i class="fas fa-paint-roller"></i><h4>Režim</h4><p>Creative</p></div>
-    <div class="info-card"><i class="fas fa-layer-group"></i><h4>Typ světa</h4><p>Superflat</p></div>
-    <div class="info-card"><i class="fas fa-code-branch"></i><h4>Verze</h4><p>Java i Bedrock 1.21.11</p></div>
-    <div class="info-card"><i class="fas fa-user-check"></i><h4>Přístup</h4><p>Whitelist</p></div>
-    <div class="info-card"><i class="fas fa-id-card"></i><h4>TabMenu</h4><p>Propracované</p></div>
-    <div class="info-card"><i class="fas fa-server"></i><h4>Hosting</h4><p>Aternos.org</p></div>
-    <div class="info-card"><i class="fas fa-tools"></i><h4>Pluginy</h4><p>Geyser, VoiceChat, WorldEdit ...</p></div>
-    <div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Správa</h4><p>Parcely a Cesty</p></div>
-</div>
-</section>
+    <script>
+        var form = document.getElementById("my-form");
+        var thankYouBox = document.getElementById("thank-you-box");
+        var button = document.getElementById("my-form-button");
+        var status = document.getElementById("my-form-status");
 
-<section id="galerie">
-<h2>Galerie města</h2>
-<div class="gallery-grid">
-    <div class="gallery-item"><div class="gallery-text">Spawn</div><img src="assets/images/gal1.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Benzínka</div><img src="assets/images/gal2.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Vchod do metra</div><img src="assets/images/gal3.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Pohled na mrakodrap</div><img src="assets/images/gal4.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Silniční tunel</div><img src="assets/images/gal5.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Koupaliště</div><img src="assets/images/gal6.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Tunel metra</div><img src="assets/images/gal7.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Schody v mrakodrapu</div><img src="assets/images/gal8.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Pohled na město z paneláku</div><img src="assets/images/gal9.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Parkoviště</div><img src="assets/images/gal10.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Radnice</div><img src="assets/images/gal11.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Vlaková stanice</div><img src="assets/images/gal12.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Nadchod u vlaku</div><img src="assets/images/gal13.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Obchodní centrum</div><img src="assets/images/gal14.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Hospoda u radnice</div><img src="assets/images/gal15.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Staré domy</div><img src="assets/images/gal16.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Pohled na barevné paneláky</div><img src="assets/images/gal17.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Autobusová zastávka</div><img src="assets/images/gal18.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Hasiči</div><img src="assets/images/gal19.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Záchranka</div><img src="assets/images/gal20.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Policie</div><img src="assets/images/gal21.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Nemocnice</div><img src="assets/images/gal22.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Škola</div><img src="assets/images/gal23.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Mc' Donalds</div><img src="assets/images/gal24.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Malý park</div><img src="assets/images/gal25.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Dřevěné obytné domy</div><img src="assets/images/gal26.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Fotbalové hřiště</div><img src="assets/images/gal27.jpg" alt="Náhled"></div>
-    <div class="gallery-item"><div class="gallery-text">Stůl v hospodě</div><img src="assets/images/gal28.jpg" alt="Náhled"></div>
-</div>
-</section>
-
-<section id="odkazy" class="web-section" style="text-align: center;">
-    <h2>Odkazy</h2>
-    <!-- target="_blank" otevře odkaz v novém okně -->
-    <a href="https://www.whatsapp.com/channel/0029Vb7WQ18KGGGKivLYC510" class="whatsapp-btn" target="_blank">📱 WhatsApp kanál</a>
-    <a href="https://www.minecraft-list.cz/server/sirtros-city" class="mclist-btn" target="_blank">💻 Minecraft server list</a>
-    <a href="https://sirtros.github.io/SirTros-city/formular.html" class="form-btn" target="_blank">✏️ Whitelist formulář</a>
-</section>
-
-
-
-<section id="pravidla">
-<h2>Pravidla serveru</h2>
-<div class="rules-list">
-    <div class="rule-item"><div class="rule-num">01</div><div><strong>Žádné TNT</strong><p style="color: #888; font-size: 0.9rem;">Používání TNT k ničení je přísně zakázáno.</p></div></div>
-    <div class="rule-item"><div class="rule-num">02</div><div><strong>Zákaz ničení</strong><p style="color: #888; font-size: 0.9rem;">Neničte stavby ostatních hráčů. Griefing se trestá banem.</p></div></div>
-    <div class="rule-item"><div class="rule-num">03</div><div><strong>Estetika</strong><p style="color: #888; font-size: 0.9rem;">Snažte se o propracované stavby. Žádné kostky.</p></div></div>
-    <div class="rule-item"><div class="rule-num">04</div><div><strong>Respektování parcel</strong><p style="color: #888; font-size: 0.9rem;">Stavte pouze na svém území.</p></div></div>
-    <div class="rule-item"><div class="rule-num">05</div><div><strong>Zákaz lag-strojů</strong><p style="color: #888; font-size: 0.9rem;">Nekonečné redstone obvody jsou zakázány.</p></div></div>
-    <div class="rule-item"><div class="rule-num">06</div><div><strong>Označování staveb</strong><p style="color: #888; font-size: 0.9rem;">Každá stavba musí mít cedulku s číslem domu (na čísla domů se ptejte majitele serveru).</p></div></div>
-    <div class="rule-item"><div class="rule-num">07</div><div><strong>Architektonický soulad</strong><p style="color: #888; font-size: 0.9rem;">Dodržujte styl čtvrti.</p></div></div>
-    <div class="rule-item"><div class="rule-num">08</div><div><strong>Úprava terénu</strong><p style="color: #888; font-size: 0.9rem;">Nenechávejte v zemi díry.</p></div></div>
-    <div class="rule-item"><div class="rule-num">09</div><div><strong>Slušné chování</strong><p style="color: #888; font-size: 0.9rem;">Respektujte ostatní stavitele.</p></div></div>
-</div>
-</section>
-
-<footer>
-<p style="text-align:center; font-size:1rem; color:#fff; font-weight:900;">&copy; 2026 SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.</p>
-</footer>
-
-<script>
-function copyIP() {
-    const ip = document.getElementById('server-ip').innerText;
-    const alertBox = document.getElementById('custom-alert');
-    navigator.clipboard.writeText(ip).then(() => {
-        alertBox.classList.add('show');
-        setTimeout(() => { alertBox.classList.remove('show'); }, 3000);
-    });
-}
-</script>
+        async function handleSubmit(event) {
+            event.preventDefault();
+            button.disabled = true;
+            button.innerText = "Odesílám...";
+            var data = new FormData(event.target);
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    form.style.display = "none";
+                    thankYouBox.style.display = "block";
+                } else {
+                    status.innerHTML = "Chyba při odesílání.";
+                    button.disabled = false;
+                    button.innerText = "Odeslat přihlášku";
+                }
+            }).catch(error => {
+                status.innerHTML = "Problém s připojením.";
+                button.disabled = false;
+                button.innerText = "Odeslat přihlášku";
+            });
+        }
+        form.addEventListener("submit", handleSubmit);
+    </script>
 </body>
 </html>
