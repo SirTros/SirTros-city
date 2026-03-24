@@ -138,43 +138,34 @@ footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2
 
 <div class="bg-glow"></div>
 
-<nav>
-    <a href="index.html" class="nav-brand">
-        <img src="assets/images/logo.png" alt="Logo" class="logo-img">
-        <div class="logo-text">SirTros-city</div>
-    </a>
-    <ul>
-        <li><a href="#domu">Domů</a></li>
-        <li><a href="#info">Info</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#odkazy">Odkazy</a></li>
-        <li><a href="#pravidla">Pravidla</a></li>
-    </ul>
-</nav>
-
-<div id="custom-alert">IP ADRESA ZKOPÍROVÁNA!</div>
-
-<header id="domu">
-    <div class="whitelist-status"><i class="fas fa-city"></i> Soukromý server</div>
-    <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px;">SirTros-city</h1>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;"> Vítejte v SirTros-city!</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">  </p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;"> SirTros-city je unikátní Minecraft kreativní server zaměřený na stavbu propracovaného moderního města </p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">na plochém světě. Naším cílem je vybudovat detailní metropoli plnou mrakodrapů, rezidenčních čtvrtí a funkční městské infrastruktury.</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;"> </p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">  - Proč se k nám přidat?</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">  </p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">Moderní architektura: Stavíme vše od minimalistických vil až po gigantické mrakodrapy.</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">Kreativní komunita: Hledáme vizionáře, kteří chtějí budovat moderní svět společně s námi.</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">Stabilní rozvoj: Projekt běží na platformě Aternos a neustále se rozšiřuje o nové parcely a stavby.</p>
-    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 600px; padding: 0 20px;">Staň se součástí naší komunity a zanech svou stopu v historii SirTros-city.</p>
+<header id="domu" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px 20px;">
+    <div class="whitelist-status">Soukromý server</div>
     
+    <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 20px;">SirTros-city</h1>
     
-    <div class="ip-box" onclick="copyIP()">
-        <i class="fas fa-server"></i>
-        <span id="server-ip" style="font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem; color: var(--primary);">SirTros-city.aternos.me</span>
-        <i class="far fa-copy" style="opacity: 0.3;"></i>
+    <!-- Opravený blok s popisem bez limitu do stran -->
+    <div style="width: 100%; max-width: 1000px; margin-bottom: 40px;">
+        <p style="font-size: 1.4rem; color: var(--primary); font-weight: bold; margin-bottom: 15px;">Vítejte v SirTros-city!</p>
+        
+        <p style="font-size: 1.1rem; color: #ccc; margin-bottom: 25px; line-height: 1.8;">
+            SirTros-city je unikátní <strong>Minecraft kreativní server</strong> zaměřený na stavbu propracovaného moderního města na plochém světě. 
+            Naším cílem je vybudovat detailní metropoli plnou mrakodrapů, rezidenčních čtvrtí a funkční městské infrastruktury. 
+            Každý detail, od podzemních kanálů až po vrcholky budov, tvoříme s důrazem na urbanismus a moderní design.
+        </p>
+
+        <p style="font-size: 1.15rem; color: #fff; font-weight: bold; margin-bottom: 10px;">Proč se k nám přidat?</p>
+        <p style="color: #aaa; margin-bottom: 8px;">• <strong>Moderní architektura:</strong> Stavíme vše od minimalistických vil až po gigantické mrakodrapy.</p>
+        <p style="color: #aaa; margin-bottom: 8px;">• <strong>Kreativní komunita:</strong> Hledáme vizionáře a stavitele, kteří chtějí budovat moderní svět společně s námi.</p>
+        <p style="color: #aaa;">• <strong>Stabilní rozvoj:</strong> Projekt běží na platformě Aternos s aktivní správou pro plynulý růst města.</p>
     </div>
+
+    <!-- Tlačítko pro IP adresu -->
+    <div class="ip-box" onclick="copyIP()">
+        <span id="server-ip" style="font-weight: bold; letter-spacing: 1px;">SirTros-city.aternos.me</span>
+        <i class="fas fa-copy" style="margin-left: 10px; color: var(--primary);"></i>
+    </div>
+</header>
+
 
     <p style="margin-top: 15px; font-size: 0.8rem; color: #555; text-transform: uppercase;">Klikni pro kopii IP Adresy</p>
 </header>
