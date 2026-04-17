@@ -16,127 +16,119 @@
     --nav-bg: rgba(0, 0, 0, 0.95);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-}
-
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(255,255,255,0.1);
 }
 
-/* NAV */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.05);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #00f0ff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; scroll-behavior: smooth; }
+body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+.bg-glow {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f13 100%);
+    z-index: -1;
+}
+
+header, section { scroll-margin-top: 100px; }
+
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10%;
-    background: var(--nav-bg);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 10%; background: var(--nav-bg);
+    backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     height: 100px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    text-decoration: none;
-    color: white;
+.nav-brand { display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; }
+.logo-img { height: 70px; border-radius: 5px; image-rendering: -webkit-optimize-contrast; }
+.logo-text { 
+    font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+    -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(255,255,255,0));
 }
 
-.logo-img {
-    height: 60px;
-}
+nav ul { display: flex; list-style: none; gap: 30px; }
+nav ul li a { text-decoration: none; color: #aaa; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+nav ul li a:hover { color: var(--primary); }
 
-.logo-text {
-    font-size: 1.6rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
+section { padding: 100px 10%; border-bottom: 1px solid rgba(255,255,255,0.05); }
+h2 { font-size: 2.5rem; text-align: center; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); }
 
-/* HEADER */
-header {
-    text-align: center;
-    padding: 90px 20px 40px;
-}
-
-h1 {
-    color: var(--primary);
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-header p {
-    margin-top: 15px;
-    color: #aaa;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* SECTIONS */
-section {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
+header { height: calc(100vh - 200px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
 .card {
     background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 25px;
-    border-radius: 12px;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(0, 210, 255, 0.2);
     margin-bottom: 20px;
 }
 
-.card h2 {
-    color: var(--primary);
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-}
-
-/* FOOTER */
 footer {
+    width: 100%;
     text-align: center;
-    padding: 30px;
-    color: #888;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    margin-top: 40px;
+    padding: 40px 10px;
+    background: rgba(0, 0, 0, 0.95);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 50px;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        height: auto;
-        padding: 20px;
-        gap: 10px;
-    }
+footer p {
+    margin: 0;
+    font-size: 1rem;
+    color: #aaa;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="bg-glow"></div>
+
 <nav>
     <a href="index.html" class="nav-brand">
-        <img src="assets/images/logo.png" class="logo-img">
+        <img src="assets/images/logo.png" alt="Logo" class="logo-img">
         <div class="logo-text">SirTros-city</div>
     </a>
+
+    <ul>
+        <li><a href="https://sirtros.github.io/SirTros-city/#domu">Domů</a></li>
+        <li><a href="https://sirtros.github.io/SirTros-city/#info">Info</a></li>
+        <li><a href="https://sirtros.github.io/SirTros-city/#galerie">Galerie</a></li>
+        <li><a href="https://sirtros.github.io/SirTros-city/#odkazy">Odkazy</a></li>
+        <li><a href="https://sirtros.github.io/SirTros-city/#pravidla">Pravidla</a></li>
+    </ul>
 </nav>
 
 <header>
-    <h1>Zásady ochrany údajů</h1>
-    <p>
-        Tyto zásady popisují, jak server SirTros-city pracuje s technickými informacemi hráčů při připojení na Minecraft server.
-        Nejde o webovou službu ani o marketingové sledování.
+    <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px; color:#00d2ff;">
+        Zásady ochrany osobních údajů
+    </h1>
+    <p style="font-size: 1.1rem; margin-bottom: 35px; color: #aaa; max-width: 800px; padding: 0 20px;">
+        Tyto zásady popisují, jak server SirTros-city pracuje s technickými informacemi hráčů při připojení na Minecraft server. Data nejsou používána pro reklamy ani marketing.
     </p>
 </header>
 
@@ -144,28 +136,28 @@ footer {
 
     <div class="card">
         <h2>Shromažďované údaje</h2>
-        <p>Při připojení na server může být použito Minecraft jméno hráče a IP adresa pouze pro technické zajištění připojení.</p>
+        <p>Při připojení na server může být použito Minecraft jméno hráče a IP adresa pouze pro technické fungování serveru.</p>
     </div>
 
     <div class="card">
         <h2>Účel použití</h2>
-        <p>Údaje slouží pro fungování serveru, stabilitu připojení, ochranu proti poškozování světa a správu hráčů.</p>
+        <p>Údaje slouží pro připojení hráčů, stabilitu serveru a ochranu proti poškozování herního světa.</p>
     </div>
 
     <div class="card">
-        <h2>Ukládání údajů</h2>
-        <p>Veškeré technické informace jsou dočasné a automaticky se vymazávají po vypnutí serveru. Neprobíhá dlouhodobé ukládání dat.</p>
+        <h2>Ukládání dat</h2>
+        <p>Veškeré informace jsou dočasné a automaticky se mažou po vypnutí serveru.</p>
     </div>
 
     <div class="card">
-        <h2>Důležité informace</h2>
-        <p>SirTros-city je komunitní Minecraft server a nepoužívá žádné externí sledování ani reklamy.</p>
+        <h2>Provoz serveru</h2>
+        <p>SirTros-city je komunitní Minecraft server bez reklam, bez sledování a bez externích analytických služeb.</p>
     </div>
 
 </section>
 
 <footer>
-    © 2026 SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.
+<p>&copy; 2026 SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.</p>
 </footer>
 
 </body>
