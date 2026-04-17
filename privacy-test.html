@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SirTros-city | Zásady ochrany osobních údajů</title>
+
+<link rel="icon" type="image/png" href="assets/images/logo.png">
+
+<style>
+:root {
+    --primary: #00d2ff;
+    --bg: #0f0f13;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text: #ffffff;
+    --nav-bg: rgba(0, 0, 0, 0.95);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+    background: var(--nav-bg);
+    height: 100px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-img {
+    height: 60px;
+}
+
+.logo-text {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 90px 20px 40px;
+}
+
+h1 {
+    color: var(--primary);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+header p {
+    margin-top: 15px;
+    color: #aaa;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* SECTIONS */
+section {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 40px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        gap: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html" class="nav-brand">
+        <img src="assets/images/logo.png" class="logo-img">
+        <div class="logo-text">SirTros-city</div>
+    </a>
+</nav>
+
+<header>
+    <h1>Zásady ochrany údajů</h1>
+    <p>
+        Tyto zásady popisují, jak server SirTros-city pracuje s technickými informacemi hráčů při připojení na Minecraft server.
+        Nejde o webovou službu ani o marketingové sledování.
+    </p>
+</header>
+
+<section>
+
+    <div class="card">
+        <h2>Shromažďované údaje</h2>
+        <p>Při připojení na server může být použito Minecraft jméno hráče a IP adresa pouze pro technické zajištění připojení.</p>
+    </div>
+
+    <div class="card">
+        <h2>Účel použití</h2>
+        <p>Údaje slouží pro fungování serveru, stabilitu připojení, ochranu proti poškozování světa a správu hráčů.</p>
+    </div>
+
+    <div class="card">
+        <h2>Ukládání údajů</h2>
+        <p>Veškeré technické informace jsou dočasné a automaticky se vymazávají po vypnutí serveru. Neprobíhá dlouhodobé ukládání dat.</p>
+    </div>
+
+    <div class="card">
+        <h2>Důležité informace</h2>
+        <p>SirTros-city je komunitní Minecraft server a nepoužívá žádné externí sledování ani reklamy.</p>
+    </div>
+
+</section>
+
+<footer>
+    © 2026 SIRTROS-CITY. VŠECHNA PRÁVA VYHRAZENA.
+</footer>
+
+</body>
+</html>
