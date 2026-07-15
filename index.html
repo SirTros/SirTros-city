@@ -141,10 +141,111 @@ header { height: calc(100vh - 200px); display: flex; flex-direction: column; jus
 footer { text-align: center; padding: 60px 20px; background: #000; border-top: 2px solid rgba(255, 255, 255, 0.1); }
 
 @media (max-width: 768px) { 
-    nav { height: auto; flex-direction: column; padding: 20px; gap: 15px; } 
-    nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
-    .logo-text { font-size: 1.2rem; }
-    .whatsapp-btn { width: 90%; text-align: center; padding: 16px 0; font-size: 1.2rem; }
+
+    body {
+        font-size: 14px;
+    }
+
+    nav { 
+        height: auto;
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .logo-img {
+        height: 45px;
+    }
+
+    .logo-text { 
+        font-size: 1rem;
+    }
+
+    nav ul { 
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li a {
+        font-size: 0.7rem;
+    }
+
+    section {
+        padding: 40px 5%;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+    }
+
+
+    /* Galerie - 2 obrázky vedle sebe */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .gallery-item {
+        height: 110px;
+        border-radius: 8px;
+    }
+
+    .gallery-text {
+        font-size: 0.55rem;
+        top: 8px;
+    }
+
+
+    /* Info karty */
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .info-card {
+        padding: 15px 5px;
+        font-size: 0.8rem;
+    }
+
+
+    /* Úvod */
+    header {
+        height: auto;
+        min-height: 80vh;
+        padding: 20px;
+    }
+
+
+    .ip-box {
+        padding: 12px 15px;
+    }
+
+    #server-ip {
+        font-size: 0.9rem !important;
+    }
+
+
+    /* Všechna tlačítka */
+    .whatsapp-btn,
+    .mclist-btn,
+    .form-btn,
+    .disc-btn {
+        width: 100%;
+        margin: 6px 0;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+
+    /* Pravidla */
+    .rule-item {
+        padding: 12px;
+        gap: 10px;
+        font-size: 0.85rem;
+    }
+
 }
 </style>
 </head>
