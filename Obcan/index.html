@@ -1,0 +1,3622 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>SirTros-city • Portál občana</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#070a0f;
+    color:#fff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button,
+input,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+#loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+
+    background:
+        radial-gradient(circle at 50% 20%,#182438 0%,#0b1019 42%,#05070b 100%);
+}
+
+.loginBox{
+    width:430px;
+    max-width:100%;
+
+    padding:34px;
+
+    border:1px solid #26364d;
+    border-radius:28px;
+
+    background:rgba(14,21,32,.96);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.65);
+}
+
+.loginLogo{
+    width:90px;
+    height:90px;
+
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:25px;
+
+    background:linear-gradient(145deg,#172b47,#0a111d);
+
+    font-size:45px;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.5);
+}
+
+.loginTitle{
+    text-align:center;
+    margin:22px 0 4px;
+
+    font-size:30px;
+    font-weight:900;
+}
+
+.loginSub{
+    text-align:center;
+    color:#8996a8;
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.loginLabel{
+    display:block;
+    margin-top:14px;
+    margin-bottom:7px;
+
+    color:#aab6c6;
+    font-size:12px;
+    font-weight:700;
+}
+
+.loginInput{
+    width:100%;
+
+    padding:15px 17px;
+
+    border:1px solid #293a51;
+    border-radius:15px;
+
+    outline:none;
+
+    background:#080e17;
+    color:white;
+
+    transition:.2s;
+}
+
+.loginInput:focus{
+    border-color:#3d8cff;
+    box-shadow:0 0 0 3px rgba(61,140,255,.12);
+}
+
+.primaryButton{
+    width:100%;
+
+    margin-top:20px;
+
+    padding:15px;
+
+    border:0;
+    border-radius:15px;
+
+    background:linear-gradient(135deg,#247cff,#1552b5);
+
+    color:white;
+
+    font-weight:900;
+
+    transition:.2s;
+}
+
+.primaryButton:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.08);
+}
+
+.loginInfo{
+    margin-top:18px;
+    padding:13px;
+
+    border-radius:13px;
+
+    background:#0a111c;
+
+    color:#7f8da0;
+
+    font-size:11px;
+    line-height:1.5;
+
+    text-align:center;
+}
+
+#loginMessage{
+    min-height:20px;
+    margin-top:12px;
+
+    text-align:center;
+
+    color:#ff7880;
+
+    font-size:12px;
+    font-weight:700;
+}
+
+/* =====================================================
+   PORTAL
+===================================================== */
+
+#portal{
+    display:none;
+    min-height:100vh;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 22px;
+
+    background:rgba(8,13,21,.94);
+
+    border-bottom:1px solid #202c3c;
+
+    backdrop-filter:blur(18px);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brandIcon{
+    width:43px;
+    height:43px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:#121d2c;
+
+    font-size:22px;
+}
+
+.brandName{
+    font-size:17px;
+    font-weight:900;
+}
+
+.brandSub{
+    color:#758399;
+    font-size:10px;
+    margin-top:2px;
+}
+
+.topUser{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.userBadge{
+    padding:8px 12px;
+
+    border-radius:12px;
+
+    background:#101a29;
+
+    color:#aebbd0;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+.logoutButton{
+    padding:9px 12px;
+
+    border:1px solid #344257;
+    border-radius:11px;
+
+    background:#0e1520;
+    color:white;
+
+    font-size:11px;
+    font-weight:800;
+}
+
+.logoutButton:hover{
+    background:#172233;
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+.sidebar{
+    width:240px;
+    flex-shrink:0;
+
+    padding:18px 12px;
+
+    border-right:1px solid #1d2938;
+
+    background:#080d15;
+}
+
+.navTitle{
+    padding:8px 11px;
+
+    color:#59677a;
+
+    font-size:10px;
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+.navButton{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:13px;
+
+    margin:4px 0;
+
+    border:1px solid transparent;
+    border-radius:13px;
+
+    background:transparent;
+
+    color:#9aa7ba;
+
+    text-align:left;
+
+    font-size:13px;
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.navButton:hover{
+    background:#111a28;
+    color:white;
+}
+
+.navButton.active{
+    background:#12213a;
+    border-color:#234a7c;
+    color:#fff;
+}
+
+.navIcon{
+    width:25px;
+    text-align:center;
+    font-size:17px;
+}
+
+.main{
+    width:100%;
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.pageTitle{
+    margin:0;
+    font-size:30px;
+    font-weight:900;
+}
+
+.pageSubtitle{
+    margin-top:6px;
+    color:#7e8b9e;
+    font-size:13px;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(210px,1fr));
+
+    gap:15px;
+
+    margin-top:22px;
+}
+
+.card{
+    padding:20px;
+
+    border:1px solid #202d3e;
+    border-radius:19px;
+
+    background:#0d141e;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.cardIcon{
+    width:44px;
+    height:44px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:#142033;
+
+    font-size:21px;
+}
+
+.cardTitle{
+    margin-top:14px;
+
+    font-size:16px;
+    font-weight:900;
+}
+
+.cardText{
+    margin-top:6px;
+
+    color:#7f8da0;
+
+    font-size:12px;
+    line-height:1.5;
+}
+
+.actionButton{
+    width:100%;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border:1px solid #2b405d;
+    border-radius:12px;
+
+    background:#101c2c;
+
+    color:white;
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.actionButton:hover{
+    background:#16263b;
+}
+
+.blue{
+    border-color:#214b7d;
+}
+
+.green{
+    border-color:#245b45;
+}
+
+.orange{
+    border-color:#624923;
+}
+
+.red{
+    border-color:#612d35;
+}
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+.welcome{
+    padding:25px;
+
+    border:1px solid #263850;
+    border-radius:23px;
+
+    background:
+        radial-gradient(circle at 80% 20%,rgba(48,116,210,.16),transparent 35%),
+        #0d151f;
+}
+
+.welcome h2{
+    margin:0;
+    font-size:25px;
+}
+
+.welcome p{
+    color:#8997aa;
+    font-size:13px;
+}
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+.quick{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(160px,1fr));
+
+    gap:12px;
+
+    margin-top:15px;
+}
+
+.quickButton{
+    padding:17px;
+
+    border:1px solid #23334a;
+    border-radius:16px;
+
+    background:#0e1723;
+
+    color:white;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+.quickButton:hover{
+    transform:translateY(-2px);
+    background:#142033;
+}
+
+.quickButton strong{
+    display:block;
+    margin-top:7px;
+}
+
+.quickButton span{
+    color:#748398;
+    font-size:10px;
+}
+
+/* =====================================================
+   DOCUMENTS
+===================================================== */
+
+.uploadBox{
+    margin-top:20px;
+
+    padding:22px;
+
+    border:1px dashed #345070;
+    border-radius:20px;
+
+    background:#0b121c;
+}
+
+.fileInput{
+    width:100%;
+    padding:13px;
+
+    border:1px solid #273a53;
+    border-radius:13px;
+
+    background:#080e16;
+    color:#aab6c5;
+}
+
+.fileInfo{
+    margin-top:10px;
+
+    color:#758399;
+    font-size:11px;
+}
+
+.textPreview{
+    width:100%;
+    min-height:180px;
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border:1px solid #26384f;
+    border-radius:15px;
+
+    resize:vertical;
+
+    outline:none;
+
+    background:#070c13;
+    color:#dce5f0;
+
+    font-size:12px;
+    line-height:1.5;
+}
+
+.uploadButton{
+    width:100%;
+
+    margin-top:12px;
+
+    padding:14px;
+
+    border:0;
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#247cff,#174fa9);
+
+    color:white;
+
+    font-weight:900;
+}
+
+.uploadButton:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.documentStored{
+    margin-top:20px;
+
+    padding:18px;
+
+    border:1px solid #234936;
+    border-radius:18px;
+
+    background:#0b1712;
+}
+
+.downloadButton{
+    margin-top:12px;
+
+    padding:11px 15px;
+
+    border:1px solid #2e6249;
+    border-radius:11px;
+
+    background:#102219;
+
+    color:#d9ffe8;
+
+    font-weight:800;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+#loadingOverlay{
+    position:fixed;
+    inset:0;
+
+    z-index:99999;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(3,6,10,.82);
+
+    backdrop-filter:blur(8px);
+}
+
+.loadingBox{
+    width:330px;
+    max-width:90%;
+
+    padding:28px;
+
+    border:1px solid #2d405a;
+    border-radius:22px;
+
+    background:#0d1622;
+
+    text-align:center;
+
+    box-shadow:0 25px 80px #000;
+}
+
+.spinner{
+    width:46px;
+    height:46px;
+
+    margin:auto;
+
+    border:4px solid #24344a;
+    border-top-color:#3e8cff;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.loadingTitle{
+    margin-top:18px;
+
+    font-weight:900;
+}
+
+.loadingText{
+    margin-top:8px;
+
+    color:#8997a8;
+
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   ALERTS
+===================================================== */
+
+.notice{
+    padding:15px;
+
+    margin-top:15px;
+
+    border-radius:15px;
+
+    background:#101925;
+
+    border:1px solid #27384f;
+}
+
+.noticeTitle{
+    font-weight:900;
+    font-size:13px;
+}
+
+.noticeText{
+    margin-top:5px;
+
+    color:#8592a4;
+
+    font-size:11px;
+    line-height:1.5;
+}
+
+.easNotice{
+    border-color:#763235;
+    background:#241013;
+}
+
+.easButton{
+    margin-top:15px;
+
+    padding:12px 16px;
+
+    border:0;
+    border-radius:12px;
+
+    background:#a91e28;
+
+    color:white;
+
+    font-weight:900;
+}
+
+/* =====================================================
+   EAS MODAL
+===================================================== */
+
+#easModal{
+    position:fixed;
+    inset:0;
+
+    z-index:9000;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:rgba(0,0,0,.75);
+
+    backdrop-filter:blur(8px);
+}
+
+.easBox{
+    width:650px;
+    max-width:100%;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    padding:28px;
+
+    border:2px solid #a5222d;
+    border-radius:24px;
+
+    background:#160b0d;
+
+    box-shadow:0 30px 100px #000;
+}
+
+.easHeader{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.easIcon{
+    width:60px;
+    height:60px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:18px;
+
+    background:#6f151c;
+
+    font-size:30px;
+}
+
+.easTitle{
+    font-size:23px;
+    font-weight:900;
+}
+
+.easType{
+    margin-top:4px;
+
+    color:#ff8c94;
+
+    font-size:10px;
+    font-weight:900;
+}
+
+.easMessage{
+    margin-top:22px;
+
+    padding:16px;
+
+    border-radius:15px;
+
+    background:#230f12;
+
+    font-weight:800;
+}
+
+.instructions{
+    margin-top:15px;
+
+    padding:17px;
+
+    border-radius:15px;
+
+    background:#100b0c;
+
+    border:1px solid #422126;
+}
+
+.instructions h3{
+    margin-top:0;
+}
+
+.instructions li{
+    margin:8px 0;
+
+    color:#c3aeb1;
+
+    font-size:12px;
+}
+
+.closeEas{
+    width:100%;
+
+    margin-top:18px;
+
+    padding:13px;
+
+    border:1px solid #66363b;
+    border-radius:13px;
+
+    background:#211114;
+
+    color:white;
+
+    font-weight:900;
+}
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profileRow{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #1d2937;
+
+    font-size:12px;
+}
+
+.profileRow span{
+    color:#718096;
+}
+
+.profileRow strong{
+    color:#e3eaf2;
+}
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+.linkGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.serviceLink{
+    display:block;
+
+    padding:20px;
+
+    border:1px solid #26384e;
+    border-radius:18px;
+
+    background:#0d151f;
+
+    color:white;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+.serviceLink:hover{
+    transform:translateY(-2px);
+    background:#131f2e;
+    border-color:#39638f;
+}
+
+.serviceLinkIcon{
+    font-size:28px;
+}
+
+.serviceLinkTitle{
+    margin-top:12px;
+
+    font-weight:900;
+}
+
+.serviceLinkText{
+    margin-top:5px;
+
+    color:#77869a;
+
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+.setting{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:20px;
+
+    padding:16px 0;
+
+    border-bottom:1px solid #1d2937;
+}
+
+.settingName{
+    font-size:13px;
+    font-weight:800;
+}
+
+.settingDesc{
+    margin-top:4px;
+
+    color:#718096;
+
+    font-size:10px;
+}
+
+.statusPill{
+    padding:7px 10px;
+
+    border-radius:9px;
+
+    background:#10251a;
+
+    color:#63d98c;
+
+    font-size:10px;
+    font-weight:900;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+#toastContainer{
+    position:fixed;
+
+    right:18px;
+    bottom:18px;
+
+    z-index:10000;
+
+    width:340px;
+    max-width:calc(100% - 30px);
+}
+
+.toast{
+    margin-top:10px;
+
+    padding:14px 16px;
+
+    border:1px solid #2d4059;
+    border-radius:14px;
+
+    background:#101925;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.5);
+
+    animation:toastIn .25s ease;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.toastTitle{
+    font-size:12px;
+    font-weight:900;
+}
+
+.toastText{
+    margin-top:4px;
+
+    color:#8c99aa;
+
+    font-size:10px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:760px){
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .brandSub{
+        display:none;
+    }
+
+    .userBadge{
+        display:none;
+    }
+
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        width:100%;
+
+        padding:7px;
+
+        border-right:0;
+        border-bottom:1px solid #1d2938;
+
+        display:flex;
+
+        overflow-x:auto;
+    }
+
+    .navTitle{
+        display:none;
+    }
+
+    .navButton{
+        width:auto;
+        min-width:max-content;
+
+        margin:0 3px;
+
+        padding:10px 12px;
+    }
+
+    .navButton span:last-child{
+        display:none;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .pageTitle{
+        font-size:25px;
+    }
+
+    .welcome{
+        padding:19px;
+    }
+
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media(max-width:430px){
+
+    .brandName{
+        font-size:14px;
+    }
+
+    .brandIcon{
+        width:38px;
+        height:38px;
+    }
+
+    .logoutButton{
+        font-size:9px;
+    }
+
+    .loginBox{
+        padding:24px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<section id="loginScreen">
+
+    <div class="loginBox">
+
+        <div class="loginLogo">
+            🏛️
+        </div>
+
+        <div class="loginTitle">
+            SirTros-city
+        </div>
+
+        <div class="loginSub">
+            Portál občana
+        </div>
+
+        <label class="loginLabel">
+            Jméno ze STCB Bank
+        </label>
+
+        <input
+            id="loginName"
+            class="loginInput"
+            type="text"
+            autocomplete="username"
+            placeholder="Např. SirTros"
+        >
+
+        <label class="loginLabel">
+            PIN ze STCB Bank
+        </label>
+
+        <input
+            id="loginPin"
+            class="loginInput"
+            type="password"
+            inputmode="numeric"
+            autocomplete="current-password"
+            placeholder="PIN"
+        >
+
+        <button
+            id="loginButton"
+            class="primaryButton"
+        >
+            🔐 Přihlásit do Portálu
+        </button>
+
+        <div id="loginMessage"></div>
+
+        <div class="loginInfo">
+            Přihlášení používá údaje z tabulky
+            <b>clients</b> v STCB Bank.
+            Portál nezobrazuje ani nepoužívá zůstatek účtu.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PORTAL
+===================================================== -->
+
+<section id="portal">
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brandIcon">
+                🏛️
+            </div>
+
+            <div>
+
+                <div class="brandName">
+                    SirTros-city
+                </div>
+
+                <div class="brandSub">
+                    Portál občana
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="topUser">
+
+            <div
+                id="topUserName"
+                class="userBadge"
+            >
+                —
+            </div>
+
+            <button
+                id="logoutButton"
+                class="logoutButton"
+            >
+                Odhlásit
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div class="layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="navTitle">
+                PORTÁL
+            </div>
+
+            <button
+                class="navButton active"
+                data-page="homePage"
+            >
+                <span class="navIcon">🏠</span>
+                <span>Domů</span>
+            </button>
+
+            <button
+                class="navButton"
+                data-page="documentsPage"
+            >
+                <span class="navIcon">📄</span>
+                <span>Dokumenty</span>
+            </button>
+
+            <button
+                class="navButton"
+                data-page="servicesPage"
+            >
+                <span class="navIcon">🌐</span>
+                <span>Služby</span>
+            </button>
+
+            <button
+                class="navButton"
+                data-page="notificationsPage"
+            >
+                <span class="navIcon">🔔</span>
+                <span>Oznámení</span>
+            </button>
+
+            <button
+                class="navButton"
+                data-page="profilePage"
+            >
+                <span class="navIcon">👤</span>
+                <span>Profil</span>
+            </button>
+
+            <button
+                class="navButton"
+                data-page="settingsPage"
+            >
+                <span class="navIcon">⚙️</span>
+                <span>Nastavení</span>
+            </button>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="main">
+
+
+            <!-- HOME -->
+
+            <section
+                id="homePage"
+                class="page active"
+            >
+
+                <div class="welcome">
+
+                    <h2>
+                        Vítej, <span id="welcomeName">občane</span> 👋
+                    </h2>
+
+                    <p>
+                        Toto je tvoje centrum služeb
+                        SirTros-city.
+                    </p>
+
+                </div>
+
+
+                <div class="quick">
+
+                    <button
+                        class="quickButton"
+                        data-page="documentsPage"
+                    >
+                        📄
+                        <strong>Dokumenty</strong>
+                        <span>Správa TXT dokumentů</span>
+                    </button>
+
+                    <button
+                        class="quickButton"
+                        data-page="servicesPage"
+                    >
+                        🌐
+                        <strong>Služby města</strong>
+                        <span>Weby SirTros-city</span>
+                    </button>
+
+                    <button
+                        class="quickButton"
+                        data-page="notificationsPage"
+                    >
+                        🔔
+                        <strong>Oznámení</strong>
+                        <span>Stav města a EAS</span>
+                    </button>
+
+                    <button
+                        class="quickButton"
+                        data-page="profilePage"
+                    >
+                        👤
+                        <strong>Profil</strong>
+                        <span>Údaje občana</span>
+                    </button>
+
+                </div>
+
+
+                <div class="grid">
+
+
+                    <div class="card blue">
+
+                        <div class="cardIcon">
+                            ⚖️
+                        </div>
+
+                        <div class="cardTitle">
+                            ST-CITY Zákony
+                        </div>
+
+                        <div class="cardText">
+                            Otevři samostatný web
+                            ST-CITY Zákony.
+                        </div>
+
+                        <button
+                            class="actionButton"
+                            id="lawsButton"
+                        >
+                            Otevřít ST-CITY Zákony →
+                        </button>
+
+                    </div>
+
+
+                    <div class="card green">
+
+                        <div class="cardIcon">
+                            📄
+                        </div>
+
+                        <div class="cardTitle">
+                            Moje dokumenty
+                        </div>
+
+                        <div class="cardText">
+                            Nahraj vlastní TXT dokument
+                            do svého STCB profilu.
+                        </div>
+
+                        <button
+                            class="actionButton"
+                            data-page="documentsPage"
+                        >
+                            Spravovat dokumenty →
+                        </button>
+
+                    </div>
+
+
+                    <div class="card orange">
+
+                        <div class="cardIcon">
+                            🚨
+                        </div>
+
+                        <div class="cardTitle">
+                            ST-CITY EAS
+                        </div>
+
+                        <div
+                            id="easStatusCard"
+                            class="cardText"
+                        >
+                            Kontroluji stav systému…
+                        </div>
+
+                        <button
+                            class="actionButton"
+                            id="openEasFromHome"
+                        >
+                            Zobrazit EAS →
+                        </button>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="cardIcon">
+                            🏛️
+                        </div>
+
+                        <div class="cardTitle">
+                            Portál občana
+                        </div>
+
+                        <div class="cardText">
+                            Přihlášení je propojeno
+                            se STCB Bank účtem.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="homeEasNotice"
+                    class="notice hidden"
+                >
+
+                    <div class="noticeTitle">
+                        🚨 Aktivní ST-CITY EAS
+                    </div>
+
+                    <div
+                        id="homeEasText"
+                        class="noticeText"
+                    >
+                        —
+                    </div>
+
+                    <button
+                        id="homeEasButton"
+                        class="easButton"
+                    >
+                        Zobrazit upozornění
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- DOCUMENTS -->
+
+            <section
+                id="documentsPage"
+                class="page"
+            >
+
+                <h1 class="pageTitle">
+                    📄 Dokumenty
+                </h1>
+
+                <div class="pageSubtitle">
+                    Nahraj TXT dokument do svého profilu.
+                </div>
+
+
+                <div class="uploadBox">
+
+                    <div class="cardTitle">
+                        📤 Nahrát TXT soubor
+                    </div>
+
+                    <div class="cardText">
+                        Maximální délka obsahu je
+                        <b>1000 znaků</b>.
+                    </div>
+
+                    <input
+                        id="txtFile"
+                        class="fileInput"
+                        type="file"
+                        accept=".txt,text/plain"
+                    >
+
+                    <div
+                        id="fileInfo"
+                        class="fileInfo"
+                    >
+                        Soubor zatím nebyl vybrán.
+                    </div>
+
+                    <textarea
+                        id="textPreview"
+                        class="textPreview"
+                        placeholder="Po výběru TXT souboru se zde zobrazí jeho obsah…"
+                    ></textarea>
+
+                    <div
+                        id="charCounter"
+                        class="fileInfo"
+                    >
+                        0 / 1000 znaků
+                    </div>
+
+                    <button
+                        id="uploadButton"
+                        class="uploadButton"
+                        disabled
+                    >
+                        📤 Uložit do mého účtu
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="storedDocument"
+                    class="documentStored hidden"
+                >
+
+                    <div class="cardTitle">
+                        ✅ Dokument uložen
+                    </div>
+
+                    <div
+                        id="storedDocumentInfo"
+                        class="cardText"
+                    >
+                        —
+                    </div>
+
+                    <button
+                        id="downloadButton"
+                        class="downloadButton"
+                    >
+                        ⬇️ Stáhnout můj TXT
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- SERVICES -->
+
+            <section
+                id="servicesPage"
+                class="page"
+            >
+
+                <h1 class="pageTitle">
+                    🌐 Služby SirTros-city
+                </h1>
+
+                <div class="pageSubtitle">
+                    Přehled dalších částí tvého města.
+                </div>
+
+
+                <div class="linkGrid">
+
+                    <a
+                        class="serviceLink"
+                        href="https://sirtros.github.io/ST-CITY-Laws/"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        <div class="serviceLinkIcon">
+                            ⚖️
+                        </div>
+
+                        <div class="serviceLinkTitle">
+                            ST-CITY Zákony
+                        </div>
+
+                        <div class="serviceLinkText">
+                            Samostatný web se zákony
+                            a pravidly ST-CITY.
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        class="serviceLink"
+                        href="https://sirtros.github.io/SirTros-city/"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        <div class="serviceLinkIcon">
+                            🏙️
+                        </div>
+
+                        <div class="serviceLinkTitle">
+                            SirTros-city
+                        </div>
+
+                        <div class="serviceLinkText">
+                            Hlavní web SirTros-city.
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        class="serviceLink"
+                        href="https://sirtros.github.io/DPST-C/"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        <div class="serviceLinkIcon">
+                            🚉
+                        </div>
+
+                        <div class="serviceLinkTitle">
+                            DPST-C
+                        </div>
+
+                        <div class="serviceLinkText">
+                            Dopravní část projektu
+                            SirTros-city.
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        class="serviceLink"
+                        href="https://sirtros.github.io/Windows-123-OS-1/Plocha.html"
+                        target="_blank"
+                        rel="noopener"
+                    >
+
+                        <div class="serviceLinkIcon">
+                            💻
+                        </div>
+
+                        <div class="serviceLinkTitle">
+                            Windows 123 OS
+                        </div>
+
+                        <div class="serviceLinkText">
+                            SirTrosOS / Windows 123
+                            prostředí.
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <section
+                id="notificationsPage"
+                class="page"
+            >
+
+                <h1 class="pageTitle">
+                    🔔 Oznámení
+                </h1>
+
+                <div class="pageSubtitle">
+                    Automaticky kontrolováno každých 5 sekund.
+                </div>
+
+
+                <div
+                    id="notificationList"
+                    style="margin-top:20px;"
+                >
+
+                    <div class="notice">
+
+                        <div class="noticeTitle">
+                            🟢 Systém
+                        </div>
+
+                        <div class="noticeText">
+                            Portál je připraven.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROFILE -->
+
+            <section
+                id="profilePage"
+                class="page"
+            >
+
+                <h1 class="pageTitle">
+                    👤 Profil občana
+                </h1>
+
+                <div class="pageSubtitle">
+                    Údaje načtené ze STCB Bank.
+                </div>
+
+
+                <div class="card" style="margin-top:20px;">
+
+                    <div class="profileRow">
+
+                        <span>
+                            Jméno
+                        </span>
+
+                        <strong id="profileName">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profileRow">
+
+                        <span>
+                            STCB účet
+                        </span>
+
+                        <strong id="profileAccount">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profileRow">
+
+                        <span>
+                            Stav přihlášení
+                        </span>
+
+                        <strong>
+                            Přihlášen
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profileRow">
+
+                        <span>
+                            Zůstatek
+                        </span>
+
+                        <strong>
+                            Nezobrazován
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SETTINGS -->
+
+            <section
+                id="settingsPage"
+                class="page"
+            >
+
+                <h1 class="pageTitle">
+                    ⚙️ Nastavení
+                </h1>
+
+                <div class="pageSubtitle">
+                    Nastavení Portálu občana.
+                </div>
+
+
+                <div class="card" style="margin-top:20px;">
+
+                    <div class="setting">
+
+                        <div>
+
+                            <div class="settingName">
+                                🔄 Kontrola EAS
+                            </div>
+
+                            <div class="settingDesc">
+                                Stav se kontroluje automaticky.
+                            </div>
+
+                        </div>
+
+                        <div class="statusPill">
+                            5 s
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting">
+
+                        <div>
+
+                            <div class="settingName">
+                                🔐 STCB přihlášení
+                            </div>
+
+                            <div class="settingDesc">
+                                Účet slouží pouze k ověření občana.
+                            </div>
+
+                        </div>
+
+                        <div class="statusPill">
+                            AKTIVNÍ
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting">
+
+                        <div>
+
+                            <div class="settingName">
+                                📄 TXT dokument
+                            </div>
+
+                            <div class="settingDesc">
+                                Limit obsahu je 1000 znaků.
+                            </div>
+
+                        </div>
+
+                        <div class="statusPill">
+                            1000
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div id="loadingOverlay">
+
+    <div class="loadingBox">
+
+        <div class="spinner"></div>
+
+        <div class="loadingTitle">
+            Ukládám dokument…
+        </div>
+
+        <div class="loadingText">
+            Nezavírej stránku a nevypínej zařízení.
+            Dokument se právě ukládá do tvého STCB účtu.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EAS MODAL
+===================================================== -->
+
+<div id="easModal">
+
+    <div class="easBox">
+
+        <div class="easHeader">
+
+            <div class="easIcon">
+                🚨
+            </div>
+
+            <div>
+
+                <div class="easTitle">
+                    ST-CITY EAS
+                </div>
+
+                <div
+                    id="easModalType"
+                    class="easType"
+                >
+                    AKTIVNÍ UPOZORNĚNÍ
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="easModalMessage"
+            class="easMessage"
+        >
+            —
+        </div>
+
+
+        <div
+            id="easInstructions"
+            class="instructions"
+        >
+            —
+        </div>
+
+
+        <button
+            id="closeEas"
+            class="closeEas"
+        >
+            Zavřít upozornění
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div id="toastContainer"></div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://knpkaoddloxtzdtzwjle.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_6_Qh3KpwhahrywU2o2irDg_ffK-MP3z";
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+const MAX_TEXT_LENGTH = 1000;
+
+const EAS_CHECK_INTERVAL = 5000;
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentClient = null;
+
+let selectedText = "";
+
+let currentEas = null;
+
+let easTimer = null;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loginScreen =
+    document.getElementById("loginScreen");
+
+const portal =
+    document.getElementById("portal");
+
+const loginName =
+    document.getElementById("loginName");
+
+const loginPin =
+    document.getElementById("loginPin");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const loadingOverlay =
+    document.getElementById("loadingOverlay");
+
+const txtFile =
+    document.getElementById("txtFile");
+
+const textPreview =
+    document.getElementById("textPreview");
+
+const charCounter =
+    document.getElementById("charCounter");
+
+const uploadButton =
+    document.getElementById("uploadButton");
+
+const fileInfo =
+    document.getElementById("fileInfo");
+
+const storedDocument =
+    document.getElementById("storedDocument");
+
+const storedDocumentInfo =
+    document.getElementById("storedDocumentInfo");
+
+const downloadButton =
+    document.getElementById("downloadButton");
+
+const easModal =
+    document.getElementById("easModal");
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+    title,
+    text
+){
+
+    const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+    const toast =
+        document.createElement("div");
+
+    toast.className =
+        "toast";
+
+    const titleElement =
+        document.createElement("div");
+
+    titleElement.className =
+        "toastTitle";
+
+    titleElement.textContent =
+        title;
+
+    const textElement =
+        document.createElement("div");
+
+    textElement.className =
+        "toastText";
+
+    textElement.textContent =
+        text;
+
+    toast.appendChild(
+        titleElement
+    );
+
+    toast.appendChild(
+        textElement
+    );
+
+    container.appendChild(
+        toast
+    );
+
+    setTimeout(
+        () => {
+
+            toast.remove();
+
+        },
+        4000
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+async function login(){
+
+    const name =
+        loginName.value.trim();
+
+    const pin =
+        loginPin.value.trim();
+
+    loginMessage.textContent =
+        "";
+
+    if(!name || !pin){
+
+        loginMessage.textContent =
+            "❌ Vyplň jméno a PIN.";
+
+        return;
+
+    }
+
+
+    loginButton.disabled =
+        true;
+
+    loginButton.textContent =
+        "⏳ Přihlašuji…";
+
+
+    try{
+
+        const result =
+            await supabaseClient
+                .from("clients")
+                .select(
+                    "id,name,pin,account,\"soubor-txt\""
+                )
+                .ilike(
+                    "name",
+                    name
+                )
+                .eq(
+                    "pin",
+                    pin
+                )
+                .maybeSingle();
+
+
+        const data =
+            result.data;
+
+        const error =
+            result.error;
+
+
+        console.log(
+            "STCB LOGIN:",
+            data,
+            error
+        );
+
+
+        if(error){
+
+            console.error(
+                error
+            );
+
+            loginMessage.textContent =
+                "❌ Nepodařilo se připojit ke STCB.";
+
+            return;
+
+        }
+
+
+        if(!data){
+
+            loginMessage.textContent =
+                "❌ Špatné jméno nebo PIN.";
+
+            return;
+
+        }
+
+
+        currentClient =
+            data;
+
+
+        loginScreen.style.display =
+            "none";
+
+        portal.style.display =
+            "block";
+
+
+        updateProfile();
+
+        loadStoredDocument();
+
+        startEasMonitoring();
+
+
+        showToast(
+            "✅ Přihlášení úspěšné",
+            "Vítej v Portálu občana, " +
+            currentClient.name + "."
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        loginMessage.textContent =
+            "❌ Nastala chyba při přihlášení.";
+
+    }
+    finally{
+
+        loginButton.disabled =
+            false;
+
+        loginButton.textContent =
+            "🔐 Přihlásit do Portálu";
+
+    }
+
+}
+
+
+/* =====================================================
+   ENTER LOGIN
+===================================================== */
+
+loginPin.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter"
+        ){
+
+            login();
+
+        }
+
+    }
+);
+
+
+loginName.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter"
+        ){
+
+            login();
+
+        }
+
+    }
+);
+
+
+loginButton.addEventListener(
+    "click",
+    login
+);
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function updateProfile(){
+
+    if(!currentClient)
+        return;
+
+
+    document.getElementById(
+        "topUserName"
+    ).textContent =
+        currentClient.name;
+
+
+    document.getElementById(
+        "welcomeName"
+    ).textContent =
+        currentClient.name;
+
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        currentClient.name;
+
+
+    document.getElementById(
+        "profileAccount"
+    ).textContent =
+        currentClient.account ||
+        "STCB-" + currentClient.id;
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function openPage(
+    pageId
+){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            page => {
+
+                page.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const target =
+        document.getElementById(
+            pageId
+        );
+
+
+    if(!target)
+        return;
+
+
+    target.classList.add(
+        "active"
+    );
+
+
+    document
+        .querySelectorAll(".navButton")
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.page ===
+                    pageId
+                );
+
+            }
+        );
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+document
+    .querySelectorAll(
+        ".navButton"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    openPage(
+                        button.dataset.page
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        ".quickButton,.actionButton"
+    )
+    .forEach(
+        button => {
+
+            const page =
+                button.dataset.page;
+
+            if(page){
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        openPage(page);
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+function logout(){
+
+    currentClient =
+        null;
+
+    currentEas =
+        null;
+
+    if(easTimer){
+
+        clearInterval(
+            easTimer
+        );
+
+        easTimer =
+            null;
+
+    }
+
+
+    portal.style.display =
+        "none";
+
+    loginScreen.style.display =
+        "flex";
+
+    loginName.value =
+        "";
+
+    loginPin.value =
+        "";
+
+    loginMessage.textContent =
+        "";
+
+    openPage(
+        "homePage"
+    );
+
+}
+
+
+/* =====================================================
+   TXT FILE
+===================================================== */
+
+txtFile.addEventListener(
+    "change",
+    async () => {
+
+        const file =
+            txtFile.files[0];
+
+
+        selectedText =
+            "";
+
+        textPreview.value =
+            "";
+
+        uploadButton.disabled =
+            true;
+
+
+        if(!file){
+
+            fileInfo.textContent =
+                "Soubor zatím nebyl vybrán.";
+
+            updateCounter();
+
+            return;
+
+        }
+
+
+        if(
+            !file.name
+                .toLowerCase()
+                .endsWith(".txt")
+        ){
+
+            fileInfo.textContent =
+                "❌ Vyber pouze TXT soubor.";
+
+            txtFile.value =
+                "";
+
+            return;
+
+        }
+
+
+        fileInfo.textContent =
+            "📄 " +
+            file.name +
+            " • " +
+            file.size +
+            " B";
+
+
+        try{
+
+            const text =
+                await file.text();
+
+
+            if(
+                text.length >
+                MAX_TEXT_LENGTH
+            ){
+
+                selectedText =
+                    "";
+
+                textPreview.value =
+                    text.slice(
+                        0,
+                        MAX_TEXT_LENGTH
+                    );
+
+                updateCounter();
+
+
+                showToast(
+                    "❌ Soubor je příliš dlouhý",
+                    "TXT soubor má více než 1000 znaků a nelze ho uložit."
+                );
+
+                return;
+
+            }
+
+
+            selectedText =
+                text;
+
+            textPreview.value =
+                text;
+
+
+            updateCounter();
+
+
+            uploadButton.disabled =
+                false;
+
+        }
+        catch(error){
+
+            console.error(
+                error
+            );
+
+            fileInfo.textContent =
+                "❌ Soubor se nepodařilo přečíst.";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   TEXT EDIT
+===================================================== */
+
+textPreview.addEventListener(
+    "input",
+    () => {
+
+        if(
+            textPreview.value.length >
+            MAX_TEXT_LENGTH
+        ){
+
+            textPreview.value =
+                textPreview.value.slice(
+                    0,
+                    MAX_TEXT_LENGTH
+                );
+
+            showToast(
+                "⚠️ Limit 1000 znaků",
+                "Další znaky už nejsou povoleny."
+            );
+
+        }
+
+
+        selectedText =
+            textPreview.value;
+
+
+        updateCounter();
+
+
+        uploadButton.disabled =
+            selectedText.length === 0;
+
+    }
+);
+
+
+/* =====================================================
+   COUNTER
+===================================================== */
+
+function updateCounter(){
+
+    const length =
+        textPreview.value.length;
+
+
+    charCounter.textContent =
+        length +
+        " / " +
+        MAX_TEXT_LENGTH +
+        " znaků";
+
+
+    if(
+        length >
+        MAX_TEXT_LENGTH
+    ){
+
+        charCounter.style.color =
+            "#ff6b76";
+
+    }
+    else{
+
+        charCounter.style.color =
+            "";
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE TXT TO STCB
+===================================================== */
+
+uploadButton.addEventListener(
+    "click",
+    saveDocument
+);
+
+
+async function saveDocument(){
+
+    if(!currentClient){
+
+        showToast(
+            "❌ Nejste přihlášen",
+            "Přihlas se do STCB účtu."
+        );
+
+        return;
+
+    }
+
+
+    const text =
+        textPreview.value;
+
+
+    if(!text){
+
+        showToast(
+            "❌ Prázdný dokument",
+            "TXT dokument neobsahuje žádný text."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        text.length >
+        MAX_TEXT_LENGTH
+    ){
+
+        showToast(
+            "❌ Dokument je příliš dlouhý",
+            "Maximum je 1000 znaků."
+        );
+
+        return;
+
+    }
+
+
+    loadingOverlay.style.display =
+        "flex";
+
+    uploadButton.disabled =
+        true;
+
+
+    try{
+
+        const updateData = {
+
+            "soubor-txt":
+                text
+
+        };
+
+
+        const result =
+            await supabaseClient
+                .from("clients")
+                .update(
+                    updateData
+                )
+                .eq(
+                    "id",
+                    currentClient.id
+                )
+                .select(
+                    "id,name,\"soubor-txt\""
+                )
+                .maybeSingle();
+
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+
+        if(result.data){
+
+            currentClient =
+                {
+                    ...currentClient,
+                    ...result.data
+                };
+
+        }
+        else{
+
+            currentClient[
+                "soubor-txt"
+            ] =
+                text;
+
+        }
+
+
+        storedDocument.classList.remove(
+            "hidden"
+        );
+
+
+        storedDocumentInfo.textContent =
+            "Dokument je uložen v poli clients.soubor-txt. " +
+            "Délka: " +
+            text.length +
+            " znaků.";
+
+
+        showToast(
+            "✅ Dokument uložen",
+            "TXT obsah byl uložen do tvého STCB účtu."
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "SAVE TXT:",
+            error
+        );
+
+
+        showToast(
+            "❌ Uložení selhalo",
+            error.message ||
+            "Dokument se nepodařilo uložit."
+        );
+
+    }
+    finally{
+
+        loadingOverlay.style.display =
+            "none";
+
+        uploadButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD STORED DOCUMENT
+===================================================== */
+
+function loadStoredDocument(){
+
+    if(!currentClient)
+        return;
+
+
+    const text =
+        currentClient[
+            "soubor-txt"
+        ];
+
+
+    if(
+        typeof text === "string" &&
+        text.length > 0
+    ){
+
+        storedDocument.classList.remove(
+            "hidden"
+        );
+
+
+        storedDocumentInfo.textContent =
+            "Uložený dokument obsahuje " +
+            text.length +
+            " znaků.";
+
+    }
+    else{
+
+        storedDocument.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DOWNLOAD TXT
+===================================================== */
+
+downloadButton.addEventListener(
+    "click",
+    downloadDocument
+);
+
+
+function downloadDocument(){
+
+    if(!currentClient){
+
+        return;
+
+    }
+
+
+    const text =
+        currentClient[
+            "soubor-txt"
+        ];
+
+
+    if(
+        typeof text !== "string" ||
+        !text.length
+    ){
+
+        showToast(
+            "📄 Žádný dokument",
+            "V účtu zatím není uložený TXT dokument."
+        );
+
+        return;
+
+    }
+
+
+    const blob =
+        new Blob(
+            [text],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href =
+        url;
+
+    link.download =
+        "SirTros-city-dokument.txt";
+
+
+    document.body.appendChild(
+        link
+    );
+
+    link.click();
+
+    link.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    showToast(
+        "⬇️ Staženo",
+        "TXT dokument byl připraven ke stažení."
+    );
+
+}
+
+
+/* =====================================================
+   ST-CITY ZÁKONY
+===================================================== */
+
+document
+    .getElementById("lawsButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            window.open(
+                "https://sirtros.github.io/ST-CITY-Laws/",
+                "_blank",
+                "noopener"
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   EAS
+===================================================== */
+
+async function checkEas(){
+
+    if(!currentClient)
+        return;
+
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/alerts" +
+                "?select=id,status,hight" +
+                "&status=eq.1",
+                {
+                    method:"GET",
+                    cache:"no-store",
+
+                    headers:{
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Cache-Control":
+                            "no-cache"
+                    }
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const rows =
+            await response.json();
+
+
+        let active =
+            null;
+
+
+        for(
+            const row of rows
+        ){
+
+            const type =
+                String(
+                    row.hight || ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+            if(
+                type === "normal" ||
+                type === "high" ||
+                type === "critical" ||
+                type === "gas"
+            ){
+
+                active =
+                    row;
+
+                break;
+
+            }
+
+        }
+
+
+        if(!active){
+
+            setNoEas();
+
+            return;
+
+        }
+
+
+        const id =
+            String(
+                active.id
+            );
+
+
+        const type =
+            String(
+                active.hight
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if(
+            !currentEas ||
+            currentEas.id !== id ||
+            currentEas.type !== type
+        ){
+
+            currentEas = {
+
+                id:id,
+                type:type,
+                time:Date.now()
+
+            };
+
+
+            displayEas(
+                type,
+                true
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "EAS:",
+            error
+        );
+
+
+        document.getElementById(
+            "easStatusCard"
+        ).textContent =
+            "⚠️ Stav EAS se nepodařilo ověřit.";
+
+    }
+
+}
+
+
+/* =====================================================
+   EAS START
+===================================================== */
+
+function startEasMonitoring(){
+
+    if(easTimer){
+
+        clearInterval(
+            easTimer
+        );
+
+    }
+
+
+    checkEas();
+
+
+    easTimer =
+        setInterval(
+            checkEas,
+            EAS_CHECK_INTERVAL
+        );
+
+}
+
+
+/* =====================================================
+   NO EAS
+===================================================== */
+
+function setNoEas(){
+
+    currentEas =
+        null;
+
+
+    document.getElementById(
+        "easStatusCard"
+    ).textContent =
+        "🟢 Žádné aktivní upozornění. Systém je připraven.";
+
+
+    document.getElementById(
+        "homeEasNotice"
+    ).classList.add(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   EAS TEXT
+===================================================== */
+
+function getEasData(type){
+
+    if(type === "critical"){
+
+        return {
+
+            label:
+                "KRITICKÉ UPOZORNĚNÍ",
+
+            title:
+                "🚨 ST-CITY KRITICKÉ UPOZORNĚNÍ",
+
+            message:
+                "OKAMŽITĚ SE ŘIĎTE POKYNY ST-CITY EAS.",
+
+            instructions:`
+                <h3>🇨🇿 CO MÁTE DĚLAT</h3>
+                <ol>
+                    <li>Okamžitě opusťte budovu.</li>
+                    <li>Jděte do stanice vlaku a metra Radnice.</li>
+                    <li>Ve stanici jděte po schodech dolů.</li>
+                    <li>V metru pokračujte podle pokynů EAS.</li>
+                    <li>Pokračujte až ke dveřím.</li>
+                    <li>Za dveřmi se nachází nouzový bunkr.</li>
+                </ol>
+            `
+
+        };
+
+    }
+
+
+    if(type === "gas"){
+
+        return {
+
+            label:
+                "KRITICKÉ UPOZORNĚNÍ",
+
+            title:
+                "🚨 NEBEZPEČNÝ PLYN",
+
+            message:
+                "BYL ZAZNAMENÁN NEBEZPEČNÝ PLYN. JĎĚTE DOMŮ A ZŮSTAŇTE UVNITŘ.",
+
+            instructions:`
+                <h3>🇨🇿 CO MÁTE DĚLAT</h3>
+                <ol>
+                    <li>Zachovejte klid.</li>
+                    <li>Jděte domů nebo do bezpečné budovy.</li>
+                    <li>Zavřete všechna okna.</li>
+                    <li>Zavřete všechny dveře.</li>
+                    <li>Zůstaňte uvnitř.</li>
+                    <li>Sledujte další pokyny ST-CITY EAS.</li>
+                </ol>
+            `
+
+        };
+
+    }
+
+
+    if(type === "high"){
+
+        return {
+
+            label:
+                "VYSOKÉ UPOZORNĚNÍ",
+
+            title:
+                "🚨 HMYZ V DOMĚ",
+
+            message:
+                "V DOMĚ BYL ZAZNAMENÁN HMYZ. ZACHOVEJTE KLID.",
+
+            instructions:`
+                <h3>🇨🇿 CO MÁTE DĚLAT</h3>
+                <ol>
+                    <li>Zachovejte klid.</li>
+                    <li>Nevstupujte do místnosti, kde se hmyz nachází.</li>
+                    <li>Pokud je to možné, opusťte místnost a zavřete dveře.</li>
+                    <li>Informujte dospělého nebo odpovědnou osobu.</li>
+                    <li>Nepokoušejte se hmyz chytat sami.</li>
+                </ol>
+            `
+
+        };
+
+    }
+
+
+    return {
+
+        label:
+            "NOUZOVÉ UPOZORNĚNÍ",
+
+        title:
+            "🚨 ST-CITY NOUZOVÉ UPOZORNĚNÍ",
+
+        message:
+            "ZŮSTAŇTE UVNITŘ A SLEDUJTE DALŠÍ POKYNY.",
+
+        instructions:`
+            <h3>🇨🇿 CO MÁTE DĚLAT</h3>
+            <ol>
+                <li>Zůstaňte uvnitř budov a domů.</li>
+                <li>Nevycházejte ven, dokud nebude upozornění ukončeno.</li>
+                <li>Sledujte další pokyny ST-CITY.</li>
+            </ol>
+        `
+
+    };
+
+}
+
+
+/* =====================================================
+   DISPLAY EAS
+===================================================== */
+
+function displayEas(
+    type,
+    notify
+){
+
+    const data =
+        getEasData(type);
+
+
+    document.getElementById(
+        "easStatusCard"
+    ).textContent =
+        "🚨 Aktivní: " +
+        data.label;
+
+
+    const homeNotice =
+        document.getElementById(
+            "homeEasNotice"
+        );
+
+
+    homeNotice.classList.remove(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "homeEasText"
+    ).textContent =
+        data.title +
+        " • " +
+        data.message;
+
+
+    document.getElementById(
+        "easModalType"
+    ).textContent =
+        data.label;
+
+
+    document.getElementById(
+        "easModalMessage"
+    ).textContent =
+        data.message;
+
+
+    document.getElementById(
+        "easInstructions"
+    ).innerHTML =
+        data.instructions;
+
+
+    if(notify){
+
+        showToast(
+            "🚨 ST-CITY EAS",
+            data.title
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN EAS
+===================================================== */
+
+function openEas(){
+
+    if(!currentEas){
+
+        showToast(
+            "🟢 ST-CITY EAS",
+            "Momentálně není aktivní žádné upozornění."
+        );
+
+        return;
+
+    }
+
+
+    displayEas(
+        currentEas.type,
+        false
+    );
+
+
+    easModal.style.display =
+        "flex";
+
+}
+
+
+document
+    .getElementById("openEasFromHome")
+    .addEventListener(
+        "click",
+        openEas
+    );
+
+
+document
+    .getElementById("homeEasButton")
+    .addEventListener(
+        "click",
+        openEas
+    );
+
+
+document
+    .getElementById("closeEas")
+    .addEventListener(
+        "click",
+        () => {
+
+            easModal.style.display =
+                "none";
+
+        }
+    );
+
+
+easModal.addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target ===
+            easModal
+        ){
+
+            easModal.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   VISIBILITY
+===================================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if(
+            !document.hidden &&
+            currentClient
+        ){
+
+            checkEas();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   STARTUP
+===================================================== */
+
+console.log(
+    "================================"
+);
+
+console.log(
+    "SirTros-city Portál občana"
+);
+
+console.log(
+    "STCB login: ACTIVE"
+);
+
+console.log(
+    "TXT limit:",
+    MAX_TEXT_LENGTH
+);
+
+console.log(
+    "EAS interval:",
+    EAS_CHECK_INTERVAL
+);
+
+console.log(
+    "EAS source: alerts.status + alerts.hight"
+);
+
+console.log(
+    "================================"
+);
+
+</script>
+
+</body>
+  </html>
