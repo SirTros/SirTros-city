@@ -91,7 +91,7 @@ async function join(){
    let settled=false;
    const timer=setTimeout(()=>{if(!settled){settled=true;reject(new Error("Připojení k Supabase vypršelo. Zkontroluj internet a Realtime."))}},12000);
    channel.subscribe(async state=>{
-     if(state==="SUBSCRIBED"&&!settled){settled=true;clearTimeout(timer);try{await track();resolve()}catch(e){reject(e)}}
+     if(state==="SUBSCRIBED"&&!settled){settled=true;clearTimeout(timer);joined=true;try{await track();resolve()}catch(e){joined=false;reject(e)}}
      else if((state==="CHANNEL_ERROR"||state==="TIMED_OUT"||state==="CLOSED")&&!settled){settled=true;clearTimeout(timer);reject(new Error("Supabase Realtime: "+state))}
    })
  });
